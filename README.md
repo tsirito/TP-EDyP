@@ -1,2 +1,2 @@
 # TP-EDyP
-TP estructura de datos y programamción
+TP estructura de datos y programamcion
