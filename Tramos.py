@@ -1,5 +1,5 @@
 class Tramo():
-    def __init__(self, origen, destino, tipo, distancia_km):
+    def __init__(self, origen=str, destino=str, tipo=str, distancia_km=float, reestriccion=str, valor_restriccion=float):
         self.origen = origen
         self.destino = destino
         self.tipo = tipo
@@ -9,8 +9,6 @@ class Tramo():
     pass
 
 # Acá podemos hacer en vez de cada Tramo una clase, podemos hacer por ejemplo TramoAereo(Tramo):, TramoAutos(Tramo)... y asi... Que todas hereden de la propiedad Tramo, pero cada tipo de Tramo tiene sus propiedades únicas (Reestricción, Valor Reestricción, Cálculo de Costos)
-
-
 
 """
 # Dejo esta alternativa comentada por las dudas:
