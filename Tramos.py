@@ -10,6 +10,10 @@ class Tramo():
 
 # Acá podemos hacer en vez de cada Tramo una clase, podemos hacer por ejemplo TramoAereo(Tramo):, TramoAutos(Tramo)... y asi... Que todas hereden de la propiedad Tramo, pero cada tipo de Tramo tiene sus propiedades únicas (Reestricción, Valor Reestricción, Cálculo de Costos)
 
+
+
+"""
+# Dejo esta alternativa comentada por las dudas:
 class BsasZarate(Tramo):
     pass
 
@@ -30,3 +34,4 @@ class JuninAzul(Tramo):
 
 class AzulMdp(Tramo):
     pass
+    """
