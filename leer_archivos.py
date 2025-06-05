@@ -18,9 +18,7 @@ class Archivos:
         except Exception as e:
             print(f"Ocurrió un error al leer el archivo: {e}")
         return datos
-    
-'validar que las conexiones pueden tener nodos que no esten en el archivo nodo'
-    
+        
 
 
 

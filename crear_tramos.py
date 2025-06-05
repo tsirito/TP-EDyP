@@ -1,23 +1,17 @@
-# crear_tramos.py
 from leer_archivos import Archivos
+from main import *
 from Tramos import TramoAereo, TramoAutomor, TramoMaritimo, TramoFerroviario
 
 class CreadorDeTramos:
-    def __init__(self, archivo_conexiones_csv: str):
-        self.archivo_conexiones_csv = archivo_conexiones_csv
+    def __init__(self, nombre_archivo, lista_ciudades):
+        self.nombre_archivo = nombre_archivo
+        self.archivos = Archivos(nombre_archivo)
 
     def crear_tramos(self):
-        """
-        Lee el archivo CSV de conexiones y crea instancias de las clases
-        de tramo correspondientes.
-        """
-        lector_archivos = Archivos(self.archivo_conexiones_csv)
-        datos_conexiones = lector_archivos.leer_archivo()
 
+        lineas_de_tramos = self.archivos.leer_archivo()
         tramos = []
-        for fila in datos_conexiones:
-            # Asumiendo el orden de las columnas en el CSV:
-            # Origen, Destino, Tipo_Transporte, Distancia_Km, Tipo_Restriccion, Valor_Restriccion
+        for fila in lineas_de_tramos:
             try:
                 origen = fila[0]
                 destino = fila[1]

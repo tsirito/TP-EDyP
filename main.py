@@ -1,23 +1,22 @@
 """Aca vamos a ir armando el codigo"""
-from leer_archivos import *
+from leer_archivos import Archivos
 from Vehiculos import *
 from Validaciones import *
 from solicitudes import *
-from crear_tramos import CreadorDeTramos
-from Tramos import Tramo
+from Tramos import *
 from Itinerarios import *
-from crear_tramos import *
+from crear_tramos import CreadorDeTramos
+from crear_ciudades import CreadordeCiudades
 
 def main():
+    creador_cuidades = CreadordeCiudades("nodos.csv")
+    cuidades_creadas = creador_cuidades.crear_ciudades()
 
-    #Creo Archivos
-    archivo_conexiones = Archivos("conexiones.csv")
-    archivo_nodos=Archivos("nodos.csv")
-    archivo_solicitudes=Archivos("solicitudes.csv")
 
     #Solicitud
-    creador = CreadorDeTramos(archivo_conexiones)
-    tramos_creados = creador.crear_tramos()
+    creador_tramos = CreadorDeTramos("conexiones.csv",cuidades_creadas) 
+    tramos_creados = creador_tramos.crear_tramos()
+
 
     for tramo in tramos_creados:
         print(f"Tramo: {tramo.origen} a {tramo.destino}, Tipo: {tramo.tipo}, Distancia: {tramo.distancia_km} km")

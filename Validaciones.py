@@ -1,7 +1,7 @@
 from main import *
 
 class Validaciones:
-    nodosExistentes = ['']
-    def validarNodo(nodo):
-        if nodo not in Validaciones.nodosExistentes:
+    ciudadesExistentes = ['']
+    def validarCiudad(ciudad):
+        if ciudad not in Validaciones.ciudadesExistentes:
             raise ValueError("la ciudad ingresada no existe")
