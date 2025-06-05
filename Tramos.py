@@ -1,35 +1,30 @@
 class Tramo():
-    def __init__(self, origen=str, destino=str, tipo=str, distancia_km=float, reestriccion=str, valor_restriccion=float):
+    def __init__(self, origen:str, destino:str, restriccion:str, distancia_km:float, tipo:str):
         self.origen = origen
         self.destino = destino
-        self.tipo = tipo
         self.distancia_km = distancia_km
+        self.tipo = tipo
+
+class TramoAereo(Tramo):
+    def __init__(self, origen: str, destino: str, tipo:str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Aereo", distancia_km)
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
-    pass
 
-# Acá podemos hacer en vez de cada Tramo una clase, podemos hacer por ejemplo TramoAereo(Tramo):, TramoAutos(Tramo)... y asi... Que todas hereden de la propiedad Tramo, pero cada tipo de Tramo tiene sus propiedades únicas (Reestricción, Valor Reestricción, Cálculo de Costos)
+class TramoAutomor(Tramo):
+    def __init__(self, origen: str, destino: str, tipo:str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Automotor", distancia_km)
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion
 
-"""
-# Dejo esta alternativa comentada por las dudas:
-class BsasZarate(Tramo):
-    pass
+class TramoMaritimo(Tramo):
+    def __init__(self, origen: str, destino: str, tipo:str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Maritimo", distancia_km)
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion
 
-class BsasJunin(Tramo):
-    pass
-
-class BsasAzul(Tramo):
-    pass
-
-class BsasMdp(Tramo):
-    pass
-
-class ZarateJunin(Tramo):
-    pass
-
-class JuninAzul(Tramo):
-    pass
-
-class AzulMdp(Tramo):
-    pass
-    """
+class TramoFerroviario(Tramo):
+    def __init__(self, origen: str, destino: str, tipo:str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Ferroviario", distancia_km)
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion

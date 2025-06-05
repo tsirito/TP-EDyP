@@ -1,0 +1,13 @@
+Vamos a hacer un intento de ordenar que queremos que haga nuestro MAIN
+
+#1--> Abrir y leer los archivos (Traer la data necesaria, ciudades, tramos, vehiculos)
+#2--> Pedido de Solicitud (input? o solicitud ejemplo ya armada?)
+#3--> Creación de Clase "APP o MAIN" 
+#4--> Clase Itinerario (evaluamos el tramo por cada vehiculo, e instanciamos en Clase Itinerario la mejor opcion de cada uno)
+#5--> Itinerario realiza calculos de costo y tiempo (crea la cantidad de Vehiculos necesarios segun la carga de la solicitud)
+#6--> Quedaría por ejemplo "Itinerario Auto, Itinerario Avion, etc.." en una lista o diccionario 
+#7--> Main toma esta lista de Itinerarios, y elige la mejor opcion
+#8 --> Ordenamos segun costo $ y Tiempo 
+#9--> Itinierario devuelve Resultado
+#10 --> 
+#11 --> 

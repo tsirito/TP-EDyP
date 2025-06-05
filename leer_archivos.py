@@ -19,20 +19,8 @@ class Archivos:
             print(f"Ocurrió un error al leer el archivo: {e}")
         return datos
     
+'validar que las conexiones pueden tener nodos que no esten en el archivo nodo'
     
-#Creo Archivos
-archivo_conexiones = Archivos("conexiones.csv")
-archivo_nodos=Archivos("nodos.csv")
-archivo_solicitudes=Archivos("solicitudes.csv")
-
-#Leo archivos
-conexiones = archivo_conexiones.leer_archivo()
-nodos = archivo_nodos.leer_archivo()
-solicitudes= archivo_solicitudes.leer_archivo()
-
-print(conexiones)
-print(solicitudes)
-print(nodos)
 
 
 
