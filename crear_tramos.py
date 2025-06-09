@@ -20,14 +20,14 @@ class CreadorDeTramos:
                 tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
                 valor_restriccion = float(fila[5]) if fila[5] else None # Manejar si no hay restriccion
                 
-                if tipo_transporte == "Aereo":
-                    tramos.append(TramoAereo(origen, destino, distancia_km, tipo_restriccion, valor_restriccion))
+                if tipo_transporte == "Aerea":
+                    tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Automotor":
-                    tramos.append(TramoAutomor(origen, destino, distancia_km, tipo_restriccion, valor_restriccion))
-                elif tipo_transporte == "Maritimo":
-                    tramos.append(TramoMaritimo(origen, destino, distancia_km, tipo_restriccion, valor_restriccion))
-                elif tipo_transporte == "Ferroviario":
-                    tramos.append(TramoFerroviario(origen, destino, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                elif tipo_transporte == "Fluvial":
+                    tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                elif tipo_transporte == "Ferroviaria":
+                    tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 else:
                     print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
             except (ValueError, IndexError) as e:
