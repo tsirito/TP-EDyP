@@ -9,3 +9,4 @@ class CreadordeCiudades():
     def crear_ciudades(self):
         lineas_de_ciudades = self.archivos.leer_archivo()
         return list(map(lambda linea: Ciudad(nombre_ciudad=linea[0]), lineas_de_ciudades))
+    

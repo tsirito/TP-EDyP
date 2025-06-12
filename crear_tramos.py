@@ -20,16 +20,22 @@ class CreadorDeTramos:
                 tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
                 valor_restriccion = Validaciones.convertir_a_float(fila[5], fila)
                 
+                #if valor_restriccion != 'restriccion invalida': #chequear esta validacion
                 if tipo_transporte == "Aerea":
-                    tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                        tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Automotor":
-                    tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                        tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Fluvial":
-                    tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                        tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Ferroviaria":
-                    tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                        tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 else:
-                    print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
+                        print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
+                #else:
+                    #None
+
             except (ValueError, IndexError) as e:
                 print(f"Error procesando la fila de conexión: {fila}. Error: {e}")
         return tramos
+    
+# crear_tramos y crear_ciudades devuelven los datos de distinta estructura. Crear tramos devuelva una lista de listas y crear ciudades devuelve una lista de ciudades. Deberia ser lo mismo para los dos (ambas lista de listas o ambas lista de tramos/ciudades)
