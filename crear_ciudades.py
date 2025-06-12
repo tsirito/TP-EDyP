@@ -1,5 +1,4 @@
 from leer_archivos import Archivos
-from main import *
 from ciudades import Ciudad
 
 class CreadordeCiudades():

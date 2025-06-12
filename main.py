@@ -1,10 +1,4 @@
 """Aca vamos a ir armando el codigo"""
-from leer_archivos import Archivos
-from Vehiculos import *
-from Validaciones import *
-from solicitudes import *
-from Tramos import *
-from Itinerarios import *
 from crear_tramos import CreadorDeTramos
 from crear_ciudades import CreadordeCiudades
 

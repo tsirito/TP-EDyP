@@ -1,6 +1,6 @@
 from leer_archivos import Archivos
-from main import *
 from Tramos import TramoAereo, TramoAutomor, TramoMaritimo, TramoFerroviario
+from Validaciones import Validaciones
 
 class CreadorDeTramos:
     def __init__(self, nombre_archivo, lista_ciudades):
@@ -18,7 +18,7 @@ class CreadorDeTramos:
                 tipo_transporte = fila[2]
                 distancia_km = float(fila[3])
                 tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
-                valor_restriccion = float(fila[5]) if fila[5] else None # Manejar si no hay restriccion
+                valor_restriccion = Validaciones.convertir_a_float(fila[5], fila)
                 
                 if tipo_transporte == "Aerea":
                     tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
