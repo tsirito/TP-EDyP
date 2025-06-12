@@ -1,7 +1,7 @@
 class Solicitud():
-    def __init__(self, id_carga, destino, tipo, distancia_km):
+    def __init__(self, id_carga, peso, origen, destino):
         self.id_carga = id_carga
-        self.peso_kg = peso_kg
+        self.peso = peso
         self.origen = origen
         self.destino = destino
     pass
