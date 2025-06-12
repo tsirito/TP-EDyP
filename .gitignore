@@ -1,4 +1,4 @@
 ./conexiones.csv
 ./nodos.csv
 ./solicitudes.csv
-__pycache__
+./__pycache__
