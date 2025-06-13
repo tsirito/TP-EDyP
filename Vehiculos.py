@@ -95,8 +95,15 @@ class Ferroviario(Vehiculos):
         costo_kg_total = self.costoKg * peso_carga 
         
         return costo_fijo_total + costo_km_total + costo_kg_total
+    
+    def calcular_tiempo_tramo(self, distancia_km, tipo_restriccion_tramo=None, valor_restriccion_tramo=None):
+        velocidad_real = self.velocidad
+        if tipo_restriccion_tramo == "velocidad_max":
+            velocidad_real = valor_restriccion_tramo
+        if velocidad_real == 0:
+            return float('inf')
+        return distancia_km / velocidad_real
 
-    # No se menciona variación de tiempo para ferroviario, así que la base está bien.
 
 
 class Aereo(Vehiculos):
@@ -146,10 +153,10 @@ class Maritimo(Vehiculos):
         if num_vehiculos == 0:
             return 0.0
         
-        costo_fijo_unitario = self.costoFijo # Default a fluvial (500)
-        if tipo_restriccion_tramo == "Tasa" and valor_restriccion_tramo == 1500:
+        costo_fijo_unitario = self.costoFijo 
+        if tipo_restriccion_tramo == "tipo" and valor_restriccion_tramo == 'maritimo':
              costo_fijo_unitario = 1500 # Tasa marítima
-        elif tipo_restriccion_tramo == "Tasa" and valor_restriccion_tramo == 500:
+        elif tipo_restriccion_tramo == "tipo" and valor_restriccion_tramo == 'fluvial':
             costo_fijo_unitario = 500 # Tasa fluvial explícita
             
         costo_fijo_total = costo_fijo_unitario * num_vehiculos
@@ -203,3 +210,4 @@ class Maritimo(Vehiculos):
 #         costoFijo = 500,
 #         costoKm = 15,
 #         costoKg= 2)
+
