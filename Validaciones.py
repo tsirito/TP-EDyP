@@ -10,6 +10,6 @@ class Validaciones:
         try:
             return float(valor) if valor != 'null' else None
         except ValueError:
-            return None #'restriccion invalida'
+            return valor
 
     #En vez de retornar none que diga que no lo cree.

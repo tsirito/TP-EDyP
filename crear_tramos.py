@@ -1,5 +1,4 @@
 from leer_archivos import Archivos
-from Tramos import TramoAereo, TramoAutomor, TramoMaritimo, TramoFerroviario
 from Validaciones import Validaciones
 
 class CreadorDeTramos:
@@ -20,7 +19,6 @@ class CreadorDeTramos:
                 tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
                 valor_restriccion = Validaciones.convertir_a_float(fila[5], fila)
                 
-                #if valor_restriccion != 'restriccion invalida': #chequear esta validacion
                 if tipo_transporte == "Aerea":
                         tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Automotor":
@@ -31,11 +29,54 @@ class CreadorDeTramos:
                         tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 else:
                         print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
-                #else:
-                    #None
-
+    
             except (ValueError, IndexError) as e:
                 print(f"Error procesando la fila de conexión: {fila}. Error: {e}")
         return tramos
     
 # crear_tramos y crear_ciudades devuelven los datos de distinta estructura. Crear tramos devuelva una lista de listas y crear ciudades devuelve una lista de ciudades. Deberia ser lo mismo para los dos (ambas lista de listas o ambas lista de tramos/ciudades)
+
+# Tramos.py
+class Tramo():
+    def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float):
+        self.origen = origen
+        self.destino = destino
+        self.tipo = tipo
+        self.distancia_km = distancia_km
+        self.restriccion = None
+        self.valor_restriccion = None
+
+    def __eq__(self, otro):
+        if not isinstance(otro, Tramo):
+            return NotImplemented
+
+        return (self.origen == otro.origen and self.destino == otro.destino and self.tipo == otro.tipo) or \
+               (self.origen == otro.destino and self.destino == otro.origen and self.tipo == otro.tipo)
+
+    def __hash__(self):
+        return hash(frozenset({self.origen, self.destino, self.tipo}))
+
+
+class TramoAereo(Tramo):
+    def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Aerea", distancia_km) 
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion
+
+class TramoAutomor(Tramo):
+    def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Automotor", distancia_km)
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion
+
+class TramoMaritimo(Tramo):
+    def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Fluvial", distancia_km) 
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion
+
+class TramoFerroviario(Tramo):
+    def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
+        super().__init__(origen, destino, "Ferroviaria", distancia_km)
+        self.restriccion = restriccion
+        self.valor_restriccion = valor_restriccion

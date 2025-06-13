@@ -1,6 +1,12 @@
-
 from leer_archivos import Archivos
-from solicitudes import Solicitud # Asegúrate de que solicitudes.py existe y contenga la clase Solicitud
+
+class Solicitud():
+    def __init__(self, id_carga, peso, origen, destino):
+        self.id_carga = id_carga
+        self.peso = peso
+        self.origen = origen
+        self.destino = destino
+    pass
 
 class CreadorDeSolicitudes:
     def __init__(self, nombre_archivo):
@@ -22,3 +28,5 @@ class CreadorDeSolicitudes:
             except (ValueError, IndexError) as e:
                 print(f"Error: No se pudo leer la fila de solicitud '{fila}'. Asegúrate que el formato sea 'id,peso,origen,destino'. Error: {e}")
         return solicitudes
+
+

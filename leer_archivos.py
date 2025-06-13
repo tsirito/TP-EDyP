@@ -19,7 +19,3 @@ class Archivos:
             print(f"Ocurrió un error al leer el archivo: {e}")
         return datos
         
-
-
-
-
