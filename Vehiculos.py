@@ -1,4 +1,10 @@
-# Vehiculos.py
+class Vehiculos:
+    def __init__(self, velocidad,carga,costoFijo,costoKm,costoKg ):
+         self.velocidad = velocidad
+         self.carga = carga
+         self.costoFijo = costoFijo
+         self.costoKm = costoKm
+         self.costoKg = costoKg
     
 class Ferroviario(Vehiculo):
     def __init__(self):
