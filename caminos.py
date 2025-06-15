@@ -1,5 +1,5 @@
 
-from nodos import Nodo, RedNodos 
+from Nodos import Nodo, RedNodos 
 from crear_tramos import Tramo
 
 def buscar_caminos(nodo_actual: Nodo, destino, red, camino_actual, caminos_visitados):

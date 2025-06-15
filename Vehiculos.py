@@ -1,4 +1,4 @@
-class Vehiculos:
+class Vehiculo:
     def __init__(self, velocidad,carga,costoFijo,costoKm,costoKg ):
          self.velocidad = velocidad
          self.carga = carga
