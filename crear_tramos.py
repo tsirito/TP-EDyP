@@ -53,9 +53,6 @@ class Tramo():
         return (self.origen == otro.origen and self.destino == otro.destino and self.tipo == otro.tipo) or \
                (self.origen == otro.destino and self.destino == otro.origen and self.tipo == otro.tipo)
 
-    def __hash__(self):
-        return hash(frozenset({self.origen, self.destino, self.tipo}))
-
 
 class TramoAereo(Tramo):
     def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
