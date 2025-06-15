@@ -40,7 +40,7 @@ def mostrar_caminos(origen, destino, red, nombre_red):
         restricciones = []
         for tramo in camino:
             if tramo.restriccion:
-                restricciones.append((tramo.restriccion, tramo.restriccion))
+                restricciones.append((tramo.restriccion, tramo.valor_restriccion))
         
         if restricciones:
             print(f"     Restricciones del camino:")
