@@ -16,7 +16,7 @@ def buscar_caminos(nodo_actual: Nodo, destino, red, camino_actual, caminos_visit
                 buscar_caminos(siguiente_nodo, destino, red, camino_actual, caminos_visitados)
                 camino_actual.pop()
 
-def mostrar_caminos(origen, destino, red, nombre_red):
+def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
     nodo_origen = red.nodos_totales.get(origen)
     if not nodo_origen:
         print(f"No se encontró el nodo de origen '{origen}' en la red {nombre_red}")
@@ -48,3 +48,27 @@ def mostrar_caminos(origen, destino, red, nombre_red):
                 print(f"       - {restr}: {val}")
         else:
             print("     Sin restricciones.")
+        
+        # Cálculo del tiempo y costo
+        tiempo_horas = distancia_total / vehiculo.velocidad
+        vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)  # redondeo hacia arriba
+
+        costo_total = (
+            vehiculo.costoFijo * vehiculos_necesarios +
+            vehiculo.costoKm * distancia_total * vehiculos_necesarios +
+            vehiculo.costoKg * peso
+        )
+
+        print(f"  {i}) {ruta}")
+        print(f"     Distancia total: {distancia_total:.2f} km") #muestra en float 2 decimales
+        if restricciones:
+            print("     Restricciones:")
+            for restr, val in restricciones:
+                print(f"       - {restr}: {val}")
+        else:
+            print("     Sin restricciones.")
+
+        print(f"     Tiempo estimado: {tiempo_horas:.2f} horas") 
+        print(f"     Vehículos necesarios: {vehiculos_necesarios}")
+        print(f"     Costo total estimado: ${costo_total:.2f}")
+

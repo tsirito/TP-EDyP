@@ -58,6 +58,11 @@ def main():
     #for nombre, nodo in red.nodos_totales.items():
         #print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos posibles")
     
+    vehiculo_ferroviario = Ferroviario()
+    vehiculo_automotor = Automotor()
+    vehiculo_aereo = Aereo()
+    vehiculo_maritimo = Maritimo()
+
     #Solicitudes
     creador_solicitudes = CreadorDeSolicitudes("solicitudes.csv")
     solicitudes = creador_solicitudes.crear_solicitudes()
@@ -65,11 +70,10 @@ def main():
     for solicitud in solicitudes:
         print(f"\n Procesando solicitud {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_ferroviaria, "Ferroviaria")
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_automotor, "Automotor")
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea")
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial")
-
+        mostrar_caminos(solicitud.origen, solicitud.destino, red_ferroviaria, "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
+        mostrar_caminos(solicitud.origen, solicitud.destino, red_automotor, "Automotor", vehiculo_automotor, solicitud.peso)
+        mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea", vehiculo_aereo, solicitud.peso)
+        mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
 
 main()
 
