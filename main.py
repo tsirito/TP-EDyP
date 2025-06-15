@@ -5,7 +5,7 @@ from crear_solicitudes import CreadorDeSolicitudes
 from nodos import RedNodos
 from nodos import Nodo
 from caminos import mostrar_caminos
-
+from vehiculos import *
 
 def main():
     #Ciudades
