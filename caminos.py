@@ -30,6 +30,8 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
     if not caminos:
         print("   No hay caminos.")
         return
+    
+    caminos_validos = []
 
     for i, camino in enumerate(caminos, 1):
         ruta = " -> ".join([tramo.origen for tramo in camino] + [camino[-1].destino])
@@ -69,6 +71,16 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
             vehiculo.costoKg * peso
         )
 
+        caminos_validos.append({
+            "indice": i,
+            "ruta": ruta,
+            "distancia": distancia_total,
+            "tiempo": tiempo_horas,
+            "costo": costo_total,
+            "vehiculos": vehiculos_necesarios,
+            "restricciones": restricciones
+        })
+        """
         print(f"  {i}) {ruta}")
         print(f"     Distancia total: {distancia_total:.2f} km")
         if restricciones:
@@ -80,3 +92,33 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
         print(f"     Tiempo estimado: {tiempo_horas:.2f} horas")
         print(f"     Vehículos necesarios: {vehiculos_necesarios}")
         print(f"     Costo total estimado: ${costo_total:.2f}")
+        """
+    if not caminos_validos: 
+        print("   ❌ No hay caminos viables para esta solicitud.")
+        return
+
+    # Buscar el más barato y el más rápido
+    camino_mas_barato = min(caminos_validos, key=lambda x: x["costo"])
+    camino_mas_rapido = min(caminos_validos, key=lambda x: x["tiempo"])
+    
+    for camino in caminos_validos:
+        caso = ""
+        if camino == camino_mas_barato and camino == camino_mas_rapido:
+            caso = "Más barato y más rápido"
+        elif caso == camino_mas_barato:
+            caso = "Más barato"
+        elif caso == camino_mas_rapido:
+            caso = "Más rápido"
+
+        print(f"  {camino['indice']}) {camino['ruta']} {caso}")
+        print(f"     Distancia total: {camino['distancia']:.2f} km")
+        
+        if camino['restricciones']:
+            print("     Restricciones:")
+            for restr, val in camino['restricciones']:
+                print(f"       - {restr}: {val}")
+        else:
+            print("     Sin restricciones.")
+        print(f"     Tiempo estimado: {camino['tiempo']:.2f} horas")
+        print(f"     Vehículos necesarios: {camino['vehiculos']}")
+        print(f"     Costo total estimado: ${camino['costo']:.2f}")
