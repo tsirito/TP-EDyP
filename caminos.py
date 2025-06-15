@@ -26,32 +26,42 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
     buscar_caminos(nodo_origen, destino, red, [], caminos)
 
     print(f"\n Caminos posibles en red {nombre_red} de {origen} a {destino}:")
-    
+
     if not caminos:
         print("   No hay caminos.")
-    
+        return
+
     for i, camino in enumerate(caminos, 1):
         ruta = " -> ".join([tramo.origen for tramo in camino] + [camino[-1].destino])
         distancia_total = sum(t.distancia_km for t in camino)
-        
-        print(f"  {i}) {ruta}")
-        print(f"     Distancia total: {distancia_total} km")
 
         restricciones = []
+        tiempo_horas = 0
+
+        # Cálculo del tiempo y costo
+
+        vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)  # redondeo hacia arriba""
+
+        camino_invalido = False
+
         for tramo in camino:
             if tramo.restriccion:
                 restricciones.append((tramo.restriccion, tramo.valor_restriccion))
-        
-        if restricciones:
-            print(f"     Restricciones del camino:")
-            for restr, val in restricciones:
-                print(f"       - {restr}: {val}")
-        else:
-            print("     Sin restricciones.")
-        
-        # Cálculo del tiempo y costo
-        tiempo_horas = distancia_total / vehiculo.velocidad
-        vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)  # redondeo hacia arriba
+            
+            velocidad_tramo = vehiculo.velocidad  # por defecto
+            
+            if tramo.restriccion == "velocidad_max" and tramo.valor_restriccion:
+                velocidad_tramo = min(tramo.valor_restriccion, vehiculo.velocidad)
+            
+            if tramo.restriccion == "peso_max" and peso/vehiculos_necesarios > tramo.valor_restriccion:
+                    camino_invalido = True
+
+            tiempo_horas += tramo.distancia_km / velocidad_tramo
+
+        if camino_invalido:
+            print(f"  {i}) {ruta}")
+            print("   Este camino no es válido para esta carga porque excede el peso máximo permitido.")
+            continue
 
         costo_total = (
             vehiculo.costoFijo * vehiculos_necesarios +
@@ -60,15 +70,13 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
         )
 
         print(f"  {i}) {ruta}")
-        print(f"     Distancia total: {distancia_total:.2f} km") #muestra en float 2 decimales
+        print(f"     Distancia total: {distancia_total:.2f} km")
         if restricciones:
             print("     Restricciones:")
             for restr, val in restricciones:
                 print(f"       - {restr}: {val}")
         else:
             print("     Sin restricciones.")
-
-        print(f"     Tiempo estimado: {tiempo_horas:.2f} horas") 
+        print(f"     Tiempo estimado: {tiempo_horas:.2f} horas")
         print(f"     Vehículos necesarios: {vehiculos_necesarios}")
         print(f"     Costo total estimado: ${costo_total:.2f}")
-

@@ -22,10 +22,10 @@ def main():
     #Instanciar la red de nodos
     #Instanciar cada nodo
 
-    for tramo in tramos_creados:
-        print(f"Tramo: {tramo.origen} a {tramo.destino}, Tipo: {tramo.tipo}, Distancia: {tramo.distancia_km} km")
-        if tramo.restriccion:
-            print(f"  Restricción: {tramo.restriccion}, Valor: {tramo.valor_restriccion}")
+    # for tramo in tramos_creados:
+    #     print(f"Tramo: {tramo.origen} a {tramo.destino}, Tipo: {tramo.tipo}, Distancia: {tramo.distancia_km} km")
+    #     if tramo.restriccion:
+    #         print(f"  Restricción: {tramo.restriccion}, Valor: {tramo.valor_restriccion}")
 
     tramos_ferroviarios = list(filter(lambda t: t.tipo == "Ferroviaria", tramos_creados))
     tramos_automotores = list(filter(lambda t: t.tipo == "Automotor", tramos_creados))
@@ -37,21 +37,21 @@ def main():
     red_aerea = RedNodos(ciudades_creadas, tramos_aereos)
     red_fluvial = RedNodos(ciudades_creadas, tramos_fluviales)
 
-    print("\n Red Ferroviaria:")
-    for nombre, nodo in red_ferroviaria.nodos_totales.items():
-        print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos ferroviarios")
+    # print("\n Red Ferroviaria:")
+    # for nombre, nodo in red_ferroviaria.nodos_totales.items():
+    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos ferroviarios")
 
-    print("\n Red Automotor:")
-    for nombre, nodo in red_automotor.nodos_totales.items():
-        print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos automotores")
+    # print("\n Red Automotor:")
+    # for nombre, nodo in red_automotor.nodos_totales.items():
+    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos automotores")
 
-    print("\n Red Aérea:")
-    for nombre, nodo in red_aerea.nodos_totales.items():
-        print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos aéreos")
+    # print("\n Red Aérea:")
+    # for nombre, nodo in red_aerea.nodos_totales.items():
+    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos aéreos")
 
-    print("\n Red Fluvial:")
-    for nombre, nodo in red_fluvial.nodos_totales.items():
-        print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos fluviales")
+    # print("\n Red Fluvial:")
+    # for nombre, nodo in red_fluvial.nodos_totales.items():
+    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos fluviales")
     
     #red = RedNodos(ciudades_creadas, tramos_creados)
 
@@ -64,7 +64,7 @@ def main():
     vehiculo_maritimo = Maritimo()
 
     #Solicitudes
-    creador_solicitudes = CreadorDeSolicitudes("solicitudes.csv")
+    creador_solicitudes = CreadorDeSolicitudes("muchas_solicitudes.csv")
     solicitudes = creador_solicitudes.crear_solicitudes()
 
     for solicitud in solicitudes:
@@ -76,4 +76,3 @@ def main():
         mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
 
 main()
-
