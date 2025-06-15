@@ -1,5 +1,8 @@
 
-def buscar_caminos(nodo_actual, destino, red, camino_actual, caminos_visitados):
+from nodos import Nodo, RedNodos 
+from crear_tramos import Tramo
+
+def buscar_caminos(nodo_actual: Nodo, destino, red, camino_actual, caminos_visitados):
     if nodo_actual.ciudad.nombre == destino:
         caminos_visitados.append(list(camino_actual))
         return
@@ -23,8 +26,25 @@ def mostrar_caminos(origen, destino, red, nombre_red):
     buscar_caminos(nodo_origen, destino, red, [], caminos)
 
     print(f"\n Caminos posibles en red {nombre_red} de {origen} a {destino}:")
+    
     if not caminos:
         print("   No hay caminos.")
+    
     for i, camino in enumerate(caminos, 1):
         ruta = " -> ".join([tramo.origen for tramo in camino] + [camino[-1].destino])
+        distancia_total = sum(t.distancia_km for t in camino)
+        
         print(f"  {i}) {ruta}")
+        print(f"     Distancia total: {distancia_total} km")
+
+        restricciones = []
+        for tramo in camino:
+            if tramo.tipo_restriccion:
+                restricciones.append((tramo.tipo_restriccion, tramo.valor_restriccion))
+        
+        if restricciones:
+            print(f"     Restricciones del camino:")
+            for restr, val in restricciones:
+                print(f"       - {restr}: {val}")
+        else:
+            print("     Sin restricciones.")

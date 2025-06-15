@@ -1,9 +1,9 @@
 """Aca vamos a ir armando el codigo"""
 from crear_tramos import CreadorDeTramos
-from Ciudades import CreadordeCiudades
+from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
-from Nodos import RedNodos
-from Nodos import Nodo
+from nodos import RedNodos
+from nodos import Nodo
 from caminos import mostrar_caminos
 
 
