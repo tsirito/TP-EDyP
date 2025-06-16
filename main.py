@@ -64,7 +64,7 @@ def main():
     vehiculo_maritimo = Maritimo()
 
     #Solicitudes
-    creador_solicitudes = CreadorDeSolicitudes("solicitudes_aereo.csv")
+    creador_solicitudes = CreadorDeSolicitudes("solicitudes.csv")
     solicitudes = creador_solicitudes.crear_solicitudes()
 
     for solicitud in solicitudes:

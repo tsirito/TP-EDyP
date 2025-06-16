@@ -48,6 +48,9 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
         camino_invalido = False
 
         for tramo in camino:
+            costoFijo= vehiculo.costoFijo
+            costo_por_km= vehiculo.costoKm
+            costo_kg= vehiculo.costoKg
             mal_tiempo = False
 
             if tramo.restriccion:
@@ -61,12 +64,18 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
                     mal_tiempo = True
                     velocidad_tramo = 400
                 else:
-                    velocidad_tramo =  vehiculo.velocidad
+                    velocidad_tramo = vehiculo.velocidad
             else:
                 # Si no es aéreo, usar la velocidad normal o restringida
                 if tramo.restriccion == "velocidad_max" and tramo.valor_restriccion:
                     velocidad_tramo = min(tramo.valor_restriccion, vehiculo.velocidad)
+                
+                if tramo.restriccion == "tipo" and tramo.valor_restriccion=="fluvial":
+                    costoFijo= 500
                     
+                if tramo.restriccion == "tipo" and tramo.valor_restriccion=="maritimo":
+                    costoFijo= 1500
+
             if tramo.restriccion == "peso_max" and peso/vehiculos_necesarios > tramo.valor_restriccion:
                 camino_invalido = True            
             
@@ -76,9 +85,31 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
                 print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")
                 restricciones.append((tramo.restriccion, tramo.valor_restriccion))
             
+            if nombre_red == "Ferroviaria" and  tramo.distancia_km >= 200:
+                costo_por_km = 15
 
+
+            #peso % capacidad = autos llenos
+            #peso - (Capacidad * autos llenos)= restante en kg
+            #si restante >15000, costo =2, sino costo =1
+            costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
             
+        if nombre_red == "Automotor":
+            autos_llenos= peso//vehiculo.carga  
+            if autos_llenos>=1:
+                costo_total+= autos_llenos*2*vehiculo.carga 
+                restante= peso - (vehiculo.carga*autos_llenos)
+                if restante <15000:
+                    costo_total += restante
+                else:
+                    costo_total+= 2*restante
+            else:
+                costo_total+= 1* peso
 
+
+        else:
+            costo_total+= costo_kg * peso
+        
             # A REVISAR:
             #
             # costo_total += (
@@ -90,12 +121,6 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
             print(f"  {i}) {ruta}")
             print("   Este camino no es válido para esta carga porque excede el peso máximo permitido.")
             continue
-
-        costo_total = (
-            vehiculo.costoFijo * vehiculos_necesarios +
-            vehiculo.costoKm * distancia_total * vehiculos_necesarios +
-            vehiculo.costoKg * peso
-        )
 
         caminos_validos.append({
             "indice": i,
@@ -122,7 +147,7 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
         print(f"     Costo total estimado: ${costo_total:.2f}")
         """
     if not caminos_validos: 
-        print("   ❌ No hay caminos viables para esta solicitud.")
+        print("    No hay caminos viables para esta solicitud.")
         return
 
     # Buscar el más barato y el más rápido
@@ -131,12 +156,12 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
     
     for camino in caminos_validos:
         caso = ""
-        if camino == camino_mas_barato and camino == camino_mas_rapido:
-            caso = "-> Más barato y más rápido de esta red"
-        elif caso == camino_mas_barato:
-            caso = "-> Más barato de esta red"
-        elif caso == camino_mas_rapido:
-            caso = "-> Más rápido de esta red"
+        if camino["costo"] == camino_mas_barato["costo"] and camino["tiempo"] == camino_mas_rapido["tiempo"]:
+            caso = "|| Más barato y más rápido de esta red"
+        elif camino["costo"] == camino_mas_barato["costo"]:
+            caso = "|| Más barato de esta red"
+        elif camino["tiempo"] == camino_mas_rapido["tiempo"]:
+            caso = "|| Más rápido de esta red"
 
         print(f"  {camino['indice']}) {camino['ruta']} {caso}")
         print(f"     Distancia total: {camino['distancia']:.2f} km")
