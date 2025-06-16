@@ -12,4 +12,5 @@ class Validaciones:
         except ValueError:
             return valor
 
+    
     #En vez de retornar none que diga que no lo cree.

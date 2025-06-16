@@ -64,15 +64,31 @@ def main():
     vehiculo_maritimo = Maritimo()
 
     #Solicitudes
-    creador_solicitudes = CreadorDeSolicitudes("muchas_solicitudes.csv")
+    creador_solicitudes = CreadorDeSolicitudes("solicitudes_aereo.csv")
     solicitudes = creador_solicitudes.crear_solicitudes()
 
     for solicitud in solicitudes:
         print(f"\n Procesando solicitud {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_ferroviaria, "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_automotor, "Automotor", vehiculo_automotor, solicitud.peso)
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea", vehiculo_aereo, solicitud.peso)
-        mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
+        caminos_ferro = mostrar_caminos(solicitud.origen, solicitud.destino, red_ferroviaria, "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
+        caminos_auto = mostrar_caminos(solicitud.origen, solicitud.destino, red_automotor, "Automotor", vehiculo_automotor, solicitud.peso)
+        caminos_aereo = mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea", vehiculo_aereo, solicitud.peso)
+        caminos_fluvial = mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
+
+    todos_los_caminos = []
+    if caminos_ferro: todos_los_caminos += caminos_ferro
+    if caminos_auto: todos_los_caminos += caminos_auto
+    if caminos_aereo: todos_los_caminos += caminos_aereo
+    if caminos_fluvial: todos_los_caminos += caminos_fluvial
+
+    if not todos_los_caminos:
+        print("   ❌ No hay caminos viables en ninguna red.")
+
+    mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
+    mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])
+
+    print("\n Resumen consolidado:")
+    print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
+    print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
 
 main()
