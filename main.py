@@ -82,7 +82,7 @@ def main():
     if caminos_fluvial: todos_los_caminos += caminos_fluvial
 
     if not todos_los_caminos:
-        print("   ❌ No hay caminos viables en ninguna red.")
+        print("   No hay caminos viables en ninguna red.")
 
     mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
     mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])

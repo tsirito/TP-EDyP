@@ -89,11 +89,12 @@ def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
                 costo_por_km = 15
 
 
-            #peso % capacidad = autos llenos
-            #peso - (Capacidad * autos llenos)= restante en kg
-            #si restante >15000, costo =2, sino costo =1
+
             costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
-            
+
+        #peso // capacidad = autos llenos
+        #peso - (Capacidad * autos llenos)= restante en kg
+        #si restante >15000, costo =2, sino costo =1    
         if nombre_red == "Automotor":
             autos_llenos= peso//vehiculo.carga  
             if autos_llenos>=1:
