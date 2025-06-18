@@ -1,4 +1,5 @@
 from leer_archivos import Archivos
+from Validaciones import Validaciones
 
 class Solicitud():
     def __init__(self, id_carga, peso, origen, destino):

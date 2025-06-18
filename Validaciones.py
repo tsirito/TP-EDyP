@@ -26,7 +26,7 @@ class ciudadesExitentes():
         if self.inicio == None:
             self.inicio = ciudad
         else:
-            Nodo.sig = self.inicio
+            ciudad.sig = self.inicio
             self.inicio = ciudad
 
     def buscarDato(self,num):
