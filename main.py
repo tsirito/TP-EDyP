@@ -3,7 +3,7 @@ from crear_tramos import CreadorDeTramos
 from Ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
 from Nodos import RedNodos
-from Nodos import Nodo
+from Nodos import NodoCiudad
 from caminos import mostrar_caminos
 from Vehiculos import *
 
