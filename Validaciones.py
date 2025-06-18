@@ -1,8 +1,11 @@
+class Nodo():
+    def __init__(self,dato,sig=None):
+        self.dato = dato
+        self.sig = sig
 
 class Validaciones:
-    ciudadesExistentes = ['']
     def validarCiudad(ciudad):
-        if ciudad not in Validaciones.ciudadesExistentes:
+        if not isinstance(ciudad, ciudadesExitentes):
             raise ValueError("la ciudad ingresada no existe")
     
     
@@ -14,3 +17,42 @@ class Validaciones:
 
     
     #En vez de retornar none que diga que no lo cree.
+
+class ciudadesExitentes():
+    def __init__(self, inicio=None):
+        self.inicio = inicio
+    
+    def agregar(self,ciudad):
+        if self.inicio == None:
+            self.inicio = ciudad
+        else:
+            Nodo.sig = self.inicio
+            self.inicio = ciudad
+
+    def buscarDato(self,num):
+        buscar=self.inicio
+       
+        while buscar!=None:
+            if buscar.dato==num:
+                return True
+            else:
+                buscar=buscar.sig
+        return False
+
+    def eliminar(self, nombre):
+        if self.buscarDato(nombre):
+            actual = self.inicio
+            previo = None
+            while actual != None:
+                if actual.dato == nombre:
+                    if previo == None:
+                        self.inicio = actual.sig
+                    else:
+                        previo.sig = actual.sig
+                    print('El nodo ha sido eliminado')
+                    actual = None  # salir del bucle
+                else:
+                    previo = actual
+                    actual = actual.sig
+
+        
