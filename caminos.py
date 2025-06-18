@@ -1,8 +1,8 @@
-from Nodos import Nodo, RedNodos 
+from nodos import NodoCiudad, RedNodos 
 from crear_tramos import Tramo
 import random
 
-def buscar_caminos(nodo_actual: Nodo, destino, red, camino_actual, caminos_visitados):
+def buscar_caminos(nodo_actual: NodoCiudad, destino, red, camino_actual, caminos_visitados):
     if nodo_actual.ciudad.nombre == destino:
         caminos_visitados.append(list(camino_actual))
         return

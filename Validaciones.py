@@ -5,8 +5,10 @@ class Nodo():
 
 class Validaciones:
     def validarCiudad(ciudad):
-        if not isinstance(ciudad, ciudadesExitentes):
+        if not isinstance(ciudad,ciudadesExitentes):
             raise ValueError("la ciudad ingresada no existe")
+        else:
+            return ciudad
     
     
     def convertir_a_float(valor, linea=None):
