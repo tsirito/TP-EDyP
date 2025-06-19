@@ -2,9 +2,8 @@
 from crear_tramos import CreadorDeTramos
 from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
-from nodos import RedNodos
-from nodos import NodoCiudad
-from caminos import mostrar_caminos
+from Nodos import RedNodos
+from Nodos import NodoCiudad
 from Vehiculos import *
 
 def main():
@@ -16,17 +15,6 @@ def main():
     creador_tramos = CreadorDeTramos("conexiones.csv",ciudades_creadas) 
     tramos_creados = creador_tramos.crear_tramos()
 
-    #print(type(tramos_creados[0].origen))
-    #print(tramos_creados[0].origen)
-    
-    #Instanciar la red de nodos
-    #Instanciar cada nodo
-
-    # for tramo in tramos_creados:
-    #     print(f"Tramo: {tramo.origen} a {tramo.destino}, Tipo: {tramo.tipo}, Distancia: {tramo.distancia_km} km")
-    #     if tramo.restriccion:
-    #         print(f"  Restricción: {tramo.restriccion}, Valor: {tramo.valor_restriccion}")
-
     tramos_ferroviarios = list(filter(lambda t: t.tipo == "Ferroviaria", tramos_creados))
     tramos_automotores = list(filter(lambda t: t.tipo == "Automotor", tramos_creados))
     tramos_aereos = list(filter(lambda t: t.tipo == "Aerea", tramos_creados))
@@ -37,26 +25,6 @@ def main():
     red_aerea = RedNodos(ciudades_creadas, tramos_aereos)
     red_fluvial = RedNodos(ciudades_creadas, tramos_fluviales)
 
-    # print("\n Red Ferroviaria:")
-    # for nombre, nodo in red_ferroviaria.nodos_totales.items():
-    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos ferroviarios")
-
-    # print("\n Red Automotor:")
-    # for nombre, nodo in red_automotor.nodos_totales.items():
-    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos automotores")
-
-    # print("\n Red Aérea:")
-    # for nombre, nodo in red_aerea.nodos_totales.items():
-    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos aéreos")
-
-    # print("\n Red Fluvial:")
-    # for nombre, nodo in red_fluvial.nodos_totales.items():
-    #     print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos fluviales")
-    
-    #red = RedNodos(ciudades_creadas, tramos_creados)
-
-    #for nombre, nodo in red.nodos_totales.items():
-        #print(f"Ciudad: {nombre}, tiene {len(nodo.destinos)} destinos posibles")
     
     vehiculo_ferroviario = Ferroviario()
     vehiculo_automotor = Automotor()
@@ -70,10 +38,10 @@ def main():
     for solicitud in solicitudes:
         print(f"\n Procesando solicitud {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 
-        caminos_ferro = mostrar_caminos(solicitud.origen, solicitud.destino, red_ferroviaria, "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
-        caminos_auto = mostrar_caminos(solicitud.origen, solicitud.destino, red_automotor, "Automotor", vehiculo_automotor, solicitud.peso)
-        caminos_aereo = mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea", vehiculo_aereo, solicitud.peso)
-        caminos_fluvial = mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
+        caminos_ferro = red_ferroviaria.mostrar_caminos(solicitud.origen, solicitud.destino,  "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
+        caminos_auto = red_automotor.mostrar_caminos(solicitud.origen, solicitud.destino, "Automotor", vehiculo_automotor, solicitud.peso)
+        caminos_aereo = red_aerea.mostrar_caminos(solicitud.origen, solicitud.destino, "Aérea", vehiculo_aereo, solicitud.peso)
+        caminos_fluvial = red_fluvial.mostrar_caminos(solicitud.origen, solicitud.destino, "Fluvial", vehiculo_maritimo, solicitud.peso)
 
         todos_los_caminos = []
         if caminos_ferro: todos_los_caminos += caminos_ferro

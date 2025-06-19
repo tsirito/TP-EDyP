@@ -34,8 +34,6 @@ class CreadorDeTramos:
             except (ValueError, IndexError) as e:
                 print(f"Error procesando la fila de conexión: {fila}. Error: {e}")
         return tramos
-    
-# crear_tramos y crear_ciudades devuelven los datos de distinta estructura. Crear tramos devuelva una lista de listas y crear ciudades devuelve una lista de ciudades. Deberia ser lo mismo para los dos (ambas lista de listas o ambas lista de tramos/ciudades)
 
 # Tramos.py
 class Tramo():
