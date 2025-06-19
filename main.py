@@ -2,8 +2,8 @@
 from crear_tramos import CreadorDeTramos
 from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
-from Nodos import RedNodos
-from Nodos import NodoCiudad
+from nodos import RedNodos
+from nodos import NodoCiudad
 from caminos import mostrar_caminos
 from Vehiculos import *
 

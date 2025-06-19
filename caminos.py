@@ -1,4 +1,4 @@
-from Nodos import NodoCiudad, RedNodos 
+from nodos import NodoCiudad, RedNodos 
 from crear_tramos import Tramo
 import random
 
