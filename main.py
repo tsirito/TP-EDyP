@@ -1,9 +1,9 @@
 """Aca vamos a ir armando el codigo"""
 from crear_tramos import CreadorDeTramos
-from Ciudades import CreadordeCiudades
+from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
 from Nodos import RedNodos
-from Nodos import Nodo
+from Nodos import NodoCiudad
 from caminos import mostrar_caminos
 from Vehiculos import *
 
@@ -82,7 +82,7 @@ def main():
     if caminos_fluvial: todos_los_caminos += caminos_fluvial
 
     if not todos_los_caminos:
-        print("   No hay caminos viables en ninguna red.")
+        print("   ❌ No hay caminos viables en ninguna red.")
 
     mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
     mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])

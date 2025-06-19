@@ -8,14 +8,14 @@ class CreadordeCiudades():
 
     def crear_ciudades(self):
         lineas_de_ciudades = self.archivos.leer_archivo()
-        map(lambda linea: ciudadesExitentes(Ciudad(nombre=linea[0])),lineas_de_ciudades)
-        return list(map(lambda linea: Ciudad(nombre=linea[0]), lineas_de_ciudades))
+        return  list(map(lambda linea: Ciudad(nombre=linea[0]), lineas_de_ciudades))
 
 class Ciudad():
-    def __init__(self,nombre, sig=None):
+    ciudades_existentes = []
+    def __init__(self,nombre):
         self.nombre = nombre
-        self.sig = sig
-        pass
+        Ciudad.ciudades_existentes.append(self)
+
     def __repr__(self):
         return f"Ciudad({self.nombre})"
     def __str__(self):

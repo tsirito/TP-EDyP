@@ -1,4 +1,5 @@
 from leer_archivos import Archivos
+from Validaciones import Validaciones
 
 class Solicitud():
     def __init__(self, id_carga, peso, origen, destino):
@@ -28,5 +29,4 @@ class CreadorDeSolicitudes:
             except (ValueError, IndexError) as e:
                 print(f"Error: No se pudo leer la fila de solicitud '{fila}'. Asegúrate que el formato sea 'id,peso,origen,destino'. Error: {e}")
         return solicitudes
-
 

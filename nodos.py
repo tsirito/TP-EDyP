@@ -1,4 +1,4 @@
-class Nodo(): #Clase que tiene cada nodo individual
+class NodoCiudad(): #Clase que tiene cada nodo individual
     def __init__(self,ciudad,destinos):
         self.ciudad=ciudad 
         self.destinos=destinos #Lista de destinos
@@ -31,12 +31,11 @@ class RedNodos: #Clase que tiene todos los nodos
                     valor_restriccion=tramo.valor_restriccion
                     )
                     destinos_desde_ciudad.append(tramo_inverso)
-            nodo = Nodo(ciudad, destinos_desde_ciudad)
+            nodo = NodoCiudad(ciudad, destinos_desde_ciudad)
             red[ciudad.nombre] = nodo
         return red
         
     #Para cada ciudad agarro cada uno de los tramos y con el destino armo cada uno de los nodos 
     def __init__(self, ciudades, tramos):
         self.nodos_totales = RedNodos.crear_nodos(ciudades, tramos)
-        
  

@@ -5,10 +5,8 @@ class Nodo():
 
 class Validaciones:
     def validarCiudad(ciudad):
-        if not isinstance(ciudad,ciudadesExitentes):
+        if not isinstance(ciudad, ciudadesExitentes):
             raise ValueError("la ciudad ingresada no existe")
-        else:
-            return ciudad
     
     
     def convertir_a_float(valor, linea=None):
@@ -28,7 +26,7 @@ class ciudadesExitentes():
         if self.inicio == None:
             self.inicio = ciudad
         else:
-            Nodo.sig = self.inicio
+            ciudad.sig = self.inicio
             self.inicio = ciudad
 
     def buscarDato(self,num):
@@ -56,3 +54,4 @@ class ciudadesExitentes():
                 else:
                     previo = actual
                     actual = actual.sig
+
