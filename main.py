@@ -2,13 +2,8 @@
 from crear_tramos import CreadorDeTramos
 from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
-<<<<<<< HEAD
 from Nodos import RedNodos
 from Nodos import NodoCiudad
-=======
-from nodos import RedNodos
-from nodos import NodoCiudad
->>>>>>> e6eef559f5d8d50630278696ce687cfe4fedb1e3
 from caminos import mostrar_caminos
 from Vehiculos import *
 
@@ -80,20 +75,22 @@ def main():
         caminos_aereo = mostrar_caminos(solicitud.origen, solicitud.destino, red_aerea, "Aérea", vehiculo_aereo, solicitud.peso)
         caminos_fluvial = mostrar_caminos(solicitud.origen, solicitud.destino, red_fluvial, "Fluvial", vehiculo_maritimo, solicitud.peso)
 
-    todos_los_caminos = []
-    if caminos_ferro: todos_los_caminos += caminos_ferro
-    if caminos_auto: todos_los_caminos += caminos_auto
-    if caminos_aereo: todos_los_caminos += caminos_aereo
-    if caminos_fluvial: todos_los_caminos += caminos_fluvial
+        todos_los_caminos = []
+        if caminos_ferro: todos_los_caminos += caminos_ferro
+        if caminos_auto: todos_los_caminos += caminos_auto
+        if caminos_aereo: todos_los_caminos += caminos_aereo
+        if caminos_fluvial: todos_los_caminos += caminos_fluvial
 
-    if not todos_los_caminos:
-        print("   ❌ No hay caminos viables en ninguna red.")
+        if not todos_los_caminos:
+            print("   No hay caminos viables en ninguna red.")
+            continue  # Pasa a la siguiente solicitud
 
-    mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
-    mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])
+        mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
+        mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])
 
-    print("\n Resumen consolidado:")
-    print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
-    print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
+        print("\n Resumen consolidado:")
+        print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
+        print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
+
 
 main()

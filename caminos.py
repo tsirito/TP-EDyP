@@ -1,13 +1,12 @@
-<<<<<<< HEAD
 from Nodos import NodoCiudad, RedNodos 
-=======
-
-from nodos import NodoCiudad, RedNodos 
->>>>>>> e6eef559f5d8d50630278696ce687cfe4fedb1e3
 from crear_tramos import Tramo
 import random
 
 def buscar_caminos(nodo_actual: NodoCiudad, destino, red, camino_actual, caminos_visitados):
+    '''La funcion buscar_caminos toma dos nodos(ciudades), uno origen que es por el que arrancamos y un destino.
+    El nodo actual arranca por el origen y se va modificando a medida que nos movemos por los tramos, 
+    generando un camino, hasta llegar al destino final'''
+
     if nodo_actual.ciudad.nombre == destino:
         caminos_visitados.append(list(camino_actual))
         return
@@ -22,6 +21,8 @@ def buscar_caminos(nodo_actual: NodoCiudad, destino, red, camino_actual, caminos
                 camino_actual.pop()
 
 def mostrar_caminos(origen, destino, red, nombre_red, vehiculo, peso):
+    '''la funcion mostrar_caminos toma la ciudad origen, la ciudad destino, la red, el nombre de la red(por tipo de vehiculo), el (vehiculo) y el peso
+    primero validamos que exista el nodo origen en la red,'''
     nodo_origen = red.nodos_totales.get(origen)
     if not nodo_origen:
         print(f"No se encontró el nodo de origen '{origen}' en la red {nombre_red}")  #VALIDACION

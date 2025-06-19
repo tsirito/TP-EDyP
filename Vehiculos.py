@@ -21,3 +21,4 @@ class Automotor(Vehiculo):
 class Maritimo(Vehiculo):
     def __init__(self):
         super().__init__(velocidad=40, carga=100000, costoFijo=500, costoKm=15, costoKg=2)
+    

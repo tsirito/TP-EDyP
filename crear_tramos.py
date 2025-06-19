@@ -13,8 +13,8 @@ class CreadorDeTramos:
         tramos = []
         for fila in lineas_de_tramos:
             try:
-                origen = (fila[0])
-                destino = (fila[1])
+                origen = Validaciones.validarCiudad(fila[0])
+                destino = Validaciones.validarCiudad(fila[1])
                 tipo_transporte = fila[2]
                 distancia_km = float(fila[3])
                 tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
