@@ -1,3 +1,4 @@
+from ciudades import Ciudad
 class Nodo():
     def __init__(self,dato,sig=None):
         self.dato = dato
@@ -5,9 +6,10 @@ class Nodo():
 
 class Validaciones:
     def validarCiudad(ciudad):
-        if not isinstance(ciudad, ciudadesExitentes):
+        if ciudad not in Ciudad.ciudades_existentes:
             raise ValueError("la ciudad ingresada no existe")
-    
+        else:
+            return ciudad
     
     def convertir_a_float(valor, linea=None):
         try:
@@ -18,6 +20,7 @@ class Validaciones:
     
     #En vez de retornar none que diga que no lo cree.
 
+'''''
 class ciudadesExitentes():
     def __init__(self, inicio=None):
         self.inicio = inicio
@@ -55,7 +58,4 @@ class ciudadesExitentes():
                     previo = actual
                     actual = actual.sig
 
-<<<<<<< HEAD
-=======
-        
->>>>>>> ca4382e058d27d465b7f1fd878f56f27c533b229
+'''''

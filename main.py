@@ -2,13 +2,8 @@
 from crear_tramos import CreadorDeTramos
 from ciudades import CreadordeCiudades
 from crear_solicitudes import CreadorDeSolicitudes
-<<<<<<< HEAD
-from Nodos import RedNodos
-from Nodos import NodoCiudad
-=======
 from nodos import RedNodos
 from nodos import NodoCiudad
->>>>>>> ca4382e058d27d465b7f1fd878f56f27c533b229
 from caminos import mostrar_caminos
 from Vehiculos import *
 
