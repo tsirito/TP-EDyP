@@ -11,9 +11,10 @@ class CreadordeCiudades():
         return  list(map(lambda linea: Ciudad(nombre=linea[0]), lineas_de_ciudades))
 
 class Ciudad():
-    def __init__(self,nombre, sig=None):
+    ciudades_existentes = []
+    def __init__(self,nombre):
         self.nombre = nombre
-        self.sig = sig
+        Ciudad.ciudades_existentes.append(self)
 
     def __repr__(self):
         return f"Ciudad({self.nombre})"
