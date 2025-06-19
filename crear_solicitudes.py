@@ -23,8 +23,8 @@ class CreadorDeSolicitudes:
             try:
                 id_carga = fila[0]
                 peso = float(fila[1])
-                origen = fila[2]
-                destino = fila[3]
+                origen = Validaciones.validarCiudad(fila[2])
+                destino = Validaciones.validarCiudad(fila[3])
                 solicitudes.append(Solicitud(id_carga, peso, origen, destino))
             except (ValueError, IndexError) as e:
                 print(f"Error: No se pudo leer la fila de solicitud '{fila}'. Asegúrate que el formato sea 'id,peso,origen,destino'. Error: {e}")

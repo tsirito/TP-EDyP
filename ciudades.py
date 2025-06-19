@@ -1,5 +1,4 @@
 from leer_archivos import Archivos
-from Validaciones import ciudadesExitentes
 
 class CreadordeCiudades():
     def __init__(self, nombre_archivo):

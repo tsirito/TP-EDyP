@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 from Nodos import NodoCiudad, RedNodos 
+=======
+
+from nodos import NodoCiudad, RedNodos 
+>>>>>>> e6eef559f5d8d50630278696ce687cfe4fedb1e3
 from crear_tramos import Tramo
 import random
 
