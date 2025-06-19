@@ -42,9 +42,6 @@ class RedNodos: #Clase que tiene todos los nodos
         self.nodos_totales = RedNodos.crear_nodos(ciudades, tramos)
 
     def buscar_caminos(self,nodo_actual: NodoCiudad, destino, camino_actual, caminos_visitados):
-        '''La funcion buscar_caminos toma dos nodos(ciudades), uno origen que es por el que arrancamos y un destino.
-        El nodo actual arranca por el origen y se va modificando a medida que nos movemos por los tramos, 
-        generando un camino, hasta llegar al destino final'''
 
         if nodo_actual.ciudad.nombre == destino:
             caminos_visitados.append(list(camino_actual))
@@ -55,15 +52,13 @@ class RedNodos: #Clase que tiene todos los nodos
             if ciudad_vecina not in [t.origen for t in camino_actual]:  # evitar ciclos
                 siguiente_nodo = self.nodos_totales.get(ciudad_vecina)
                 if siguiente_nodo:
-                    camino_actual.append(tramo)
+                    camino_actual.append(tramo) #buenos aires 
                     self.buscar_caminos(siguiente_nodo, destino, camino_actual, caminos_visitados)
-                    camino_actual.pop()
+                    camino_actual.pop() 
 
 
     def mostrar_caminos(self, origen, destino, nombre_red, vehiculo, peso):
-        '''la funcion mostrar_caminos toma la ciudad origen, la ciudad destino, la red, el nombre de la red(por tipo de vehiculo), el (vehiculo) y el peso
-        primero validamos que exista el nodo origen en la red,'''
-
+        
         nodo_origen = self.nodos_totales.get(origen)
         
         if not nodo_origen:

@@ -25,7 +25,6 @@ def main():
     red_aerea = RedNodos(ciudades_creadas, tramos_aereos)
     red_fluvial = RedNodos(ciudades_creadas, tramos_fluviales)
 
-    
     vehiculo_ferroviario = Ferroviario()
     vehiculo_automotor = Automotor()
     vehiculo_aereo = Aereo()
@@ -36,7 +35,7 @@ def main():
     solicitudes = creador_solicitudes.crear_solicitudes()
 
     for solicitud in solicitudes:
-        print(f"\n Procesando solicitud {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
+        print(f"\n Solicitud: {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 
         caminos_ferro = red_ferroviaria.mostrar_caminos(solicitud.origen, solicitud.destino,  "Ferroviaria", vehiculo_ferroviario, solicitud.peso)
         caminos_auto = red_automotor.mostrar_caminos(solicitud.origen, solicitud.destino, "Automotor", vehiculo_automotor, solicitud.peso)
