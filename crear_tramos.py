@@ -1,14 +1,24 @@
+        
 from leer_archivos import Archivos
 from Validaciones import Validaciones
 from ciudades import Ciudad
 
 class CreadorDeTramos:
+    """
+    Clase encargada de crear tramos de transporte entre ciudades a partir de un archivo csv.
+    """
+
     def __init__(self, nombre_archivo, lista_ciudades):
+        """
+        Inicializa una instancia del creador de tramos.
+        """
         self.nombre_archivo = nombre_archivo
         self.archivos = Archivos(nombre_archivo)
 
     def crear_tramos(self):
-
+        """
+        Crea objetos de tipo Tramo en base a los datos del archivo y devuelve una lista de tramos creados, según el tipo de transporte.
+        """
         lineas_de_tramos = self.archivos.leer_archivo()
         tramos = []
         for fila in lineas_de_tramos:
@@ -16,28 +26,36 @@ class CreadorDeTramos:
                 origen = Validaciones.validarCiudad(fila[0])
                 destino = Validaciones.validarCiudad(fila[1])
                 tipo_transporte = fila[2]
-                distancia_km = float(fila[3])
-                tipo_restriccion = fila[4] if fila[4] else None  # Manejar si no hay restriccion
+                distancia_km = float(fila[3])   #verificar sea numero, sea positivo
+                tipo_restriccion = fila[4] if fila[4] else None
                 valor_restriccion = Validaciones.convertir_a_float(fila[5], fila)
-                
+
                 if tipo_transporte == "Aerea":
-                        tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Automotor":
-                        tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Fluvial":
-                        tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Ferroviaria":
-                        tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoFerroviario(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 else:
-                        print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
+                    print(f"Advertencia: Tipo de transporte desconocido '{tipo_transporte}' en la fila: {fila}")
     
             except (ValueError, IndexError) as e:
                 print(f"Error procesando la fila de conexión: {fila}. Error: {e}")
         return tramos
 
+
 # Tramos.py
-class Tramo():
+class Tramo:
+    """
+    Clase que representa un tramo de transporte entre dos ciudades.
+    """
+
     def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float):
+        """
+        Inicializa una instancia de Tramo.
+        """
         self.origen = origen
         self.destino = destino
         self.tipo = tipo
@@ -46,6 +64,9 @@ class Tramo():
         self.valor_restriccion = None
 
     def __eq__(self, otro):
+        """
+        Compara dos tramos considerando que el orden del origen y destino no importa si el tipo es el mismo. Devuelve True si los tramos son equivalentes, False en caso contrario.
+        """
         if not isinstance(otro, Tramo):
             return NotImplemented
 
@@ -58,6 +79,8 @@ class TramoAereo(Tramo):
         super().__init__(origen, destino, "Aerea", distancia_km) 
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
+    
+    
 
 class TramoAutomor(Tramo):
     def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
@@ -76,3 +99,4 @@ class TramoFerroviario(Tramo):
         super().__init__(origen, destino, "Ferroviaria", distancia_km)
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
+        

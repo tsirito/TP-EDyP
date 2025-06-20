@@ -1,12 +1,27 @@
 """Aca vamos a ir armando el codigo"""
 from crear_tramos import CreadorDeTramos
-from ciudades import CreadordeCiudades
+from ciudades import CreadordeCiudades, Ciudad
 from crear_solicitudes import CreadorDeSolicitudes
 from Nodos import RedNodos
 from Nodos import NodoCiudad
 from Vehiculos import *
+from graficos import graficar_itinerario
+
+
+
 
 def main():
+    """
+    Función principal que se usa para la creación de ciudades, tramos, redes de transporte y solicitudes de envío.
+
+    Hace lo siguiente:
+    - Lee las ciudades desde un archivo y las instancia.
+    - Lee los tramos y los separa por tipo de transporte.
+    - Crea una red distinta por tipo de transporte (ferroviaria, automotor, aérea y fluvial).
+    - Instancia los distintos tipos de vehículos.
+    - Procesa solicitudes de transporte, muestra los caminos posibles por red,
+      y elige el camino más barato y el más rápido para cada red, y luego para toda la solicitud en gral.
+    """
     #Ciudades
     creador_ciudades = CreadordeCiudades("nodos.csv")
     ciudades_creadas = creador_ciudades.crear_ciudades()
@@ -31,7 +46,7 @@ def main():
     vehiculo_maritimo = Maritimo()
 
     #Solicitudes
-    creador_solicitudes = CreadorDeSolicitudes("solicitudes.csv")
+    creador_solicitudes = CreadorDeSolicitudes("muchas_solicitudes.csv")
     solicitudes = creador_solicitudes.crear_solicitudes()
 
     for solicitud in solicitudes:
@@ -58,6 +73,32 @@ def main():
         print("\n Resumen consolidado:")
         print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
         print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
+        
+        
+        # Elegir el camino más barato (ya lo tenés en mejor_costo)
+        camino_a_graficar = mejor_costo["camino"]  # lista de tramos
+        red_caminos = mejor_costo["red"]
 
+        # Elegir el vehículo según la red
+        if red_caminos == "Ferroviaria":
+            vehiculo = vehiculo_ferroviario
+        elif red_caminos == "Automotor":
+            vehiculo = vehiculo_automotor
+        elif red_caminos == "Aérea":
+            vehiculo = vehiculo_aereo
+        elif red_caminos == "Fluvial":
+            vehiculo = vehiculo_maritimo
+        else:
+            vehiculo = None  # o lanzá un error
+
+        # Peso de la solicitud
+        peso = solicitud.peso
+
+        # Llamar a la función para graficar
+        graficar_itinerario(camino_a_graficar, vehiculo, peso)
+            
 
 main()
+
+
+

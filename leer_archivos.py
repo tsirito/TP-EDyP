@@ -3,12 +3,16 @@ import csv
 class Archivos:
     
     def __init__(self, archivo):
-        self.archivo = archivo
         '''
         Metodo constructor del tipo de dato que nos va a permitir traducir los archivos csv
         '''
+        self.archivo = archivo
+
       
     def leer_archivo(self):
+        '''
+        Metodo que traduce los datos en los archivos csv. Itera los mismos para permitir almacenarlos en una lista llamada datos de manera ordenada
+        '''
         datos = []
         try:
             with open(self.archivo, mode='r', encoding='utf-8') as archivo:
@@ -21,8 +25,6 @@ class Archivos:
         except Exception as e:
             print(f"Ocurrió un error al leer el archivo: {e}")
         return datos
-    '''
-    Metodo que traduce los datos en los archivos csv. Itera los mismos para permitir almacenarlos en una lista llamada datos de manera ordenada
-    '''
+   
         
 

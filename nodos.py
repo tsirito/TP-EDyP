@@ -1,68 +1,94 @@
+
 import random 
 
-class NodoCiudad(): #Clase que tiene cada nodo individual
-    def __init__(self,ciudad,destinos):
-        self.ciudad=ciudad 
-        self.destinos=destinos #Lista de destinos
+class NodoCiudad:
+    """
+    Representa un nodo individual dentro de la red de ciudades.
+    """
+
+    def __init__(self, ciudad, destinos):
+        """
+        Inicializa un nodo con su ciudad asociada y los tramos de destino.
+        """
+        self.ciudad = ciudad 
+        self.destinos = destinos
 
     def __repr__(self):
+        """
+        Devuelve una representación formal del nodo, incluyendo la cantidad de destinos.
+        """
         return f"Nodo({self.ciudad}, {len(self.destinos)} destinos)"
-# Agarrar tramos
 
-class RedNodos: #Clase que tiene todos los nodos
-    
+
+class RedNodos:
+    """
+    Representa una red de nodos de ciudades conectadas por tramos.
+    """
+
     @staticmethod
     def crear_nodos(ciudades, tramos):
+        """
+        Crea un diccionario de nodos a partir de una lista de ciudades y tramos.
+        Devuelve un Diccionario donde las claves son nombres de ciudades y los valores son los nodos creados de estas ciudades.
+        """
         red = {}
         for ciudad in ciudades:
             destinos_desde_ciudad = []
-            for tramo in tramos: # Aca recorro los tramos y le agrego cada tramo a la lista 
+            for tramo in tramos:
                 if tramo.origen == ciudad.nombre:
                     destinos_desde_ciudad.append(tramo)
                 if tramo.destino == ciudad.nombre:
-                    #Si estamos parados en Zarate
-                    #Aca lo que hacemos es si vemos un tramo Buenos Aires --> Zarate
-                    #Guardamos el tramo inverso Zarate --> Buenos Aires  (En en nodo de ZARATE)
                     tipo_tramo_clase = type(tramo)
                     tramo_inverso = tipo_tramo_clase(
-                    origen=tramo.destino,
-                    destino=tramo.origen,
-                    tipo=tramo.tipo, 
-                    distancia_km=tramo.distancia_km,
-                    restriccion=tramo.restriccion, 
-                    valor_restriccion=tramo.valor_restriccion
+                        origen=tramo.destino,
+                        destino=tramo.origen,
+                        tipo=tramo.tipo, 
+                        distancia_km=tramo.distancia_km,
+                        restriccion=tramo.restriccion, 
+                        valor_restriccion=tramo.valor_restriccion
                     )
                     destinos_desde_ciudad.append(tramo_inverso)
             nodo = NodoCiudad(ciudad, destinos_desde_ciudad)
             red[ciudad.nombre] = nodo
         return red
-        
-    #Para cada ciudad agarro cada uno de los tramos y con el destino armo cada uno de los nodos 
+
     def __init__(self, ciudades, tramos):
+        """
+        Inicializa la red de nodos a partir de ciudades y tramos.
+        """
         self.nodos_totales = RedNodos.crear_nodos(ciudades, tramos)
 
-    def buscar_caminos(self,nodo_actual: NodoCiudad, destino, camino_actual, caminos_visitados):
-
+    def buscar_caminos(self, nodo_actual, destino, camino_actual, caminos_visitados):
+        """
+        Realiza una búsqueda RECURSIVA (la funcion es usada dentro de la misma funcion) de todos los caminos posibles desde un nodo origen a un destino.
+        Toma el origen del viaje y va analizando y uniendo tramos hasta llegar a destino. Una vez que llego a destino, 
+        agrego el camino y vuelvo para atras uniendo nuevos tramos y asi generando todos los caminos posibles hasta nuestro destino.
+        Almacena todos los caminos encontrados en una lista.
+        """
         if nodo_actual.ciudad.nombre == destino:
             caminos_visitados.append(list(camino_actual))
             return
 
         for tramo in nodo_actual.destinos:
-            ciudad_vecina = tramo.destino  # es un string
+            ciudad_vecina = tramo.destino
             if ciudad_vecina not in [t.origen for t in camino_actual]:  # evitar ciclos
                 siguiente_nodo = self.nodos_totales.get(ciudad_vecina)
                 if siguiente_nodo:
-                    camino_actual.append(tramo) #buenos aires 
+                    camino_actual.append(tramo)
                     self.buscar_caminos(siguiente_nodo, destino, camino_actual, caminos_visitados)
                     camino_actual.pop() 
 
-
     def mostrar_caminos(self, origen, destino, nombre_red, vehiculo, peso):
-        
+        """
+        Muestra todos los caminos posibles entre dos ciudades, calcula distancia, tiempo, costos y restricciones.
+        También identifica el camino más barato y el más rápido dentro de la red.
+        Ademas devuelve la lista de caminos válidos con información de ruta, tiempo, costo y restricciones.
+        (LA PARTE DE LAS RESTRICCIONES HAY Q METERLA EN LOS VEHICULOS Y TRAMOS ASI Q EL DOCSTRINGS HABRIA Q MODIFICARLO MAS ADELANTE)
+        """
         nodo_origen = self.nodos_totales.get(origen)
         
         if not nodo_origen:
-            print(f"No se encontró el nodo de origen '{origen}' en la red {nombre_red}")  #VALIDACION
+            print(f"No se encontró el nodo de origen '{origen}' en la red {nombre_red}")
             return
 
         caminos = []
@@ -76,31 +102,26 @@ class RedNodos: #Clase que tiene todos los nodos
         
         caminos_validos = []
 
-        for i, camino in enumerate(caminos, 1):  #  
+        for i, camino in enumerate(caminos, 1):
             ruta = " -> ".join([tramo.origen for tramo in camino] + [camino[-1].destino])
             distancia_total = sum(t.distancia_km for t in camino)
-
             restricciones = []
             tiempo_horas = 0
-            costo_total=0
-
-            # Cálculo del tiempo y costo
-
-            vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)  # redondeo hacia arriba"" con el -1
-
+            costo_total = 0
+            vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)
             camino_invalido = False
 
             for tramo in camino:
-                costoFijo= vehiculo.costoFijo
-                costo_por_km= vehiculo.costoKm
-                costo_kg= vehiculo.costoKg
+                costoFijo = vehiculo.costoFijo
+                costo_por_km = vehiculo.costoKm
+                costo_kg = vehiculo.costoKg
                 mal_tiempo = False
 
                 if tramo.restriccion:
                     restricciones.append((tramo.restriccion, tramo.valor_restriccion))
                 
-                velocidad_tramo = vehiculo.velocidad  # por defecto
-                
+                velocidad_tramo = vehiculo.velocidad
+
                 if tramo.tipo == "Aerea" and tramo.restriccion == "prob_mal_tiempo":
                     probabilidad = tramo.valor_restriccion
                     if random.random() < probabilidad:
@@ -109,17 +130,16 @@ class RedNodos: #Clase que tiene todos los nodos
                     else:
                         velocidad_tramo = vehiculo.velocidad
                 else:
-                    # Si no es aéreo, usar la velocidad normal o restringida
                     if tramo.restriccion == "velocidad_max" and tramo.valor_restriccion:
                         velocidad_tramo = min(tramo.valor_restriccion, vehiculo.velocidad)
                     
-                    if tramo.restriccion == "tipo" and tramo.valor_restriccion=="fluvial":
-                        costoFijo= 500
+                    if tramo.restriccion == "tipo" and tramo.valor_restriccion == "fluvial":
+                        costoFijo = 500
                         
-                    if tramo.restriccion == "tipo" and tramo.valor_restriccion=="maritimo":
-                        costoFijo= 1500
+                    if tramo.restriccion == "tipo" and tramo.valor_restriccion == "maritimo":
+                        costoFijo = 1500
 
-                if tramo.restriccion == "peso_max" and peso/vehiculos_necesarios > tramo.valor_restriccion:
+                if tramo.restriccion == "peso_max" and peso / vehiculos_necesarios > tramo.valor_restriccion:
                     camino_invalido = True            
                 
                 tiempo_horas += tramo.distancia_km / velocidad_tramo            
@@ -128,27 +148,24 @@ class RedNodos: #Clase que tiene todos los nodos
                     print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")
                     restricciones.append((tramo.restriccion, tramo.valor_restriccion))
                 
-                if nombre_red == "Ferroviaria" and  tramo.distancia_km >= 200:
+                if nombre_red == "Ferroviaria" and tramo.distancia_km >= 200:
                     costo_por_km = 15
 
                 costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
-                
+
             if nombre_red == "Automotor":
-                autos_llenos= peso//vehiculo.carga  
-                if autos_llenos>=1:
-                    costo_total+= autos_llenos*2*vehiculo.carga 
-                    restante= peso - (vehiculo.carga*autos_llenos)
-                    if restante <15000:
+                autos_llenos = peso // vehiculo.carga  
+                if autos_llenos >= 1:
+                    costo_total += autos_llenos * 2 * vehiculo.carga 
+                    restante = peso - (vehiculo.carga * autos_llenos)
+                    if restante < 15000:
                         costo_total += restante
                     else:
-                        costo_total+= 2*restante
+                        costo_total += 2 * restante
                 else:
-                    costo_total+= 1* peso
-
-
+                    costo_total += peso
             else:
-                costo_total+= costo_kg * peso
-            
+                costo_total += costo_kg * peso
 
             if camino_invalido:
                 continue
@@ -161,15 +178,15 @@ class RedNodos: #Clase que tiene todos los nodos
                 "costo": costo_total,
                 "vehiculos": vehiculos_necesarios,
                 "restricciones": restricciones,
-                "red": nombre_red
-
+                "red": nombre_red,
+                "camino": camino  
             })
+
 
         if not caminos_validos: 
             print("    No hay caminos viables para esta solicitud.")
             return
 
-        # Buscar el más barato y el más rápido
         camino_mas_barato = min(caminos_validos, key=lambda x: x["costo"])
         camino_mas_rapido = min(caminos_validos, key=lambda x: x["tiempo"])
         
@@ -196,5 +213,3 @@ class RedNodos: #Clase que tiene todos los nodos
             print(f"     Costo total estimado: ${camino['costo']:.2f}")
         
         return caminos_validos
-    
- 
