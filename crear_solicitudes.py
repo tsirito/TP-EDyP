@@ -38,7 +38,7 @@ class CreadorDeSolicitudes:
                 continue
             try:
                 id_carga = fila[0]
-                peso = float(fila[1])
+                peso = Validaciones.validar_valor_positivo(fila[1], 'peso')
                 origen = Validaciones.validarCiudad(fila[2])
                 destino = Validaciones.validarCiudad(fila[3])
                 solicitudes.append(Solicitud(id_carga, peso, origen, destino))

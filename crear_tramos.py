@@ -25,9 +25,9 @@ class CreadorDeTramos:
             try:
                 origen = Validaciones.validarCiudad(fila[0])
                 destino = Validaciones.validarCiudad(fila[1])
-                tipo_transporte = fila[2]
-                distancia_km = float(fila[3])   #verificar sea numero, sea positivo
-                tipo_restriccion = fila[4] if fila[4] else None
+                tipo_transporte = fila[2] 
+                distancia_km = Validaciones.validar_valor_positivo(fila[3], 'distancia_km')  
+                tipo_restriccion = Validaciones.restriccion_existente(fila[4])  
                 valor_restriccion = Validaciones.convertir_a_float(fila[5], fila)
 
                 if tipo_transporte == "Aerea":
@@ -100,3 +100,6 @@ class TramoFerroviario(Tramo):
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
         
+
+
+

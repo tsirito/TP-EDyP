@@ -22,27 +22,36 @@ class Validaciones:
             return float(valor) if valor != 'null' else None
         except ValueError:
             return valor
-    
-    # def valor_negativo(valor, variable):
-    #      """
-    #      Verifica si un valor numérico es negativo , y si no lo es ademas verifica que sea numerico.
-    #      """
-    #      if valor <= 0: 
-    #          raise ValueError(f'el valor '{valor}' de {variable}, no puede ser negativo o cero.')
-    #      else:
-    #          try:
-    #              return float(valor)
 
-    #          except (ValueError, TypeError) as e:
-    #              raise ValueError(f'no se puede convertir el valor '{valor}', a un numero float para la {variable}: {e}')
+
+    def validar_valor_positivo(valor, variable):
+        """
+        Verifica si el valor es un numero y despues verifico que sea positivo.
+        """        
+        try:
+            valor_float = float(valor)
+
+        except (ValueError, TypeError):
+            raise ValueError(f"No se puede convertir el valor '{valor}' a número para {variable}")
         
-"""
-Validaciones q hay q hacer:
-tipos de datos de los archivos:
- (distancias y pesos negativos o en forma no numerica)
- (valor restriccion para caso str solo maritimo o fluvial)
- (que la carga no sea la misma?)
+        if valor_float >= 0:
+            return valor_float
+        else:
+            raise ValueError(f"El valor '{valor}' de {variable} no puede ser negativo.")
 
+    
+    def restriccion_existente(valor):
+        '''
+        Verifica que la restricción leída en el archivo sea una de las existentes.
+        '''
+        restricciones_existentes = ['prob_mal_tiempo', 'tipo', 'velocidad_max', 'peso_max']
 
-"""
+        if valor is None or valor.strip() == "":
+            return None
+
+        elif valor not in restricciones_existentes:
+            raise ValueError(f"La restricción '{valor}' no está dentro de las restricciones válidas: {restricciones_existentes}")
+        
+        else:
+            return valor
 
