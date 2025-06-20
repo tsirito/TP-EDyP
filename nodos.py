@@ -1,5 +1,5 @@
-
-import random 
+from crear_tramos import *
+from Vehiculos import *
 
 class NodoCiudad:
     """
@@ -109,7 +109,7 @@ class RedNodos:
             tiempo_horas = 0
             costo_total = 0
             vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)
-            camino_invalido = False
+
 
             for tramo in camino:
                 costoFijo = vehiculo.costoFijo
@@ -122,52 +122,34 @@ class RedNodos:
                 
                 velocidad_tramo = vehiculo.velocidad
 
-                if tramo.tipo == "Aerea" and tramo.restriccion == "prob_mal_tiempo":
-                    probabilidad = tramo.valor_restriccion
-                    if random.random() < probabilidad:
-                        mal_tiempo = True
-                        velocidad_tramo = 400
-                    else:
-                        velocidad_tramo = vehiculo.velocidad
-                else:
-                    if tramo.restriccion == "velocidad_max" and tramo.valor_restriccion:
-                        velocidad_tramo = min(tramo.valor_restriccion, vehiculo.velocidad)
-                    
-                    if tramo.restriccion == "tipo" and tramo.valor_restriccion == "fluvial":
-                        costoFijo = 500
-                        
-                    if tramo.restriccion == "tipo" and tramo.valor_restriccion == "maritimo":
-                        costoFijo = 1500
+                #Restricciones de Tramos
+                velocidad_tramo, costoFijo, costo_por_km, invalido = tramo.aplicar_restricciones(vehiculo,peso,vehiculos_necesarios)
 
-                if tramo.restriccion == "peso_max" and peso / vehiculos_necesarios > tramo.valor_restriccion:
-                    camino_invalido = True            
+                #Restricciones de Vehiculos
+                if isinstance(tramo, TramoAereo):
+                    velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)            
                 
-                tiempo_horas += tramo.distancia_km / velocidad_tramo            
-
                 if mal_tiempo:
-                    print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")
-                    restricciones.append((tramo.restriccion, tramo.valor_restriccion))
+                    print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")                
+
+                if isinstance(tramo, TramoFerroviario): #Correcto
+                    costo_por_km = vehiculo.restriccion_Ferroviaria(tramo.distancia_km)
                 
-                if nombre_red == "Ferroviaria" and tramo.distancia_km >= 200:
-                    costo_por_km = 15
+                if isinstance(tramo, TramoMaritimo):
+                    costoFijo = vehiculo.restriccion_Maritima(tramo)
 
                 costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
+                tiempo_horas += tramo.distancia_km / velocidad_tramo      
 
-            if nombre_red == "Automotor":
-                autos_llenos = peso // vehiculo.carga  
-                if autos_llenos >= 1:
-                    costo_total += autos_llenos * 2 * vehiculo.carga 
-                    restante = peso - (vehiculo.carga * autos_llenos)
-                    if restante < 15000:
-                        costo_total += restante
-                    else:
-                        costo_total += 2 * restante
-                else:
-                    costo_total += peso
+            if isinstance(tramo, TramoAutomotor):
+                costo_total += vehiculo.restriccion_Automotor(peso)
             else:
                 costo_total += costo_kg * peso
 
-            if camino_invalido:
+            if invalido:
+                print(f"  {ruta} - Camino inválido por restricciones:")
+                for restr, val in restricciones:
+                    print(f"     - {restr}: {val}")
                 continue
 
             caminos_validos.append({
@@ -181,7 +163,6 @@ class RedNodos:
                 "red": nombre_red,
                 "camino": camino  
             })
-
 
         if not caminos_validos: 
             print("    No hay caminos viables para esta solicitud.")

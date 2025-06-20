@@ -1,7 +1,7 @@
-        
 from leer_archivos import Archivos
 from Validaciones import Validaciones
 from ciudades import Ciudad
+from Vehiculos import *
 
 class CreadorDeTramos:
     """
@@ -33,7 +33,7 @@ class CreadorDeTramos:
                 if tipo_transporte == "Aerea":
                     tramos.append(TramoAereo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Automotor":
-                    tramos.append(TramoAutomor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
+                    tramos.append(TramoAutomotor(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Fluvial":
                     tramos.append(TramoMaritimo(origen, destino, tipo_transporte, distancia_km, tipo_restriccion, valor_restriccion))
                 elif tipo_transporte == "Ferroviaria":
@@ -73,16 +73,30 @@ class Tramo:
         return (self.origen == otro.origen and self.destino == otro.destino and self.tipo == otro.tipo) or \
                (self.origen == otro.destino and self.destino == otro.origen and self.tipo == otro.tipo)
 
+    def aplicar_restricciones(self, vehiculo, peso, vehiculos_necesarios):
+        velocidad = vehiculo.velocidad
+        costo_fijo = vehiculo.costoFijo
+        costo_km = vehiculo.costoKm
+        camino_invalido = False
 
+        if self.restriccion == "velocidad_max" and self.valor_restriccion:
+            velocidad = min(self.valor_restriccion, vehiculo.velocidad)
+
+        if self.restriccion == "peso_max":
+            peso_por_vehiculo = peso / vehiculos_necesarios
+            if peso_por_vehiculo > self.valor_restriccion:
+                camino_invalido = True
+     
+
+        return velocidad, costo_fijo, costo_km, camino_invalido
+    
 class TramoAereo(Tramo):
     def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
         super().__init__(origen, destino, "Aerea", distancia_km) 
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
     
-    
-
-class TramoAutomor(Tramo):
+class TramoAutomotor(Tramo):
     def __init__(self, origen: str, destino: str, tipo: str, distancia_km: float, restriccion: str = None, valor_restriccion: float = None):
         super().__init__(origen, destino, "Automotor", distancia_km)
         self.restriccion = restriccion
@@ -99,7 +113,3 @@ class TramoFerroviario(Tramo):
         super().__init__(origen, destino, "Ferroviaria", distancia_km)
         self.restriccion = restriccion
         self.valor_restriccion = valor_restriccion
-        
-
-
-

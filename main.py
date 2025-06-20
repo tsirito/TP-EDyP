@@ -1,8 +1,8 @@
 from crear_tramos import CreadorDeTramos
 from ciudades import CreadordeCiudades, Ciudad
 from crear_solicitudes import CreadorDeSolicitudes
-from Nodos import RedNodos
-from Nodos import NodoCiudad
+from nodos import RedNodos
+from nodos import NodoCiudad
 from Vehiculos import *
 from graficos import graficar_itinerario
 
@@ -56,7 +56,7 @@ def main():
         print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
         print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
 
-        #Grafico
+        #Graficos
         camino_barato = mejor_costo["camino"]
         red_barato = mejor_costo["red"]
         vehiculo_barato = {
