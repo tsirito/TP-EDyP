@@ -1,5 +1,20 @@
 from crear_tramos import *
 from Vehiculos import *
+from crear_tramos import MainTramos
+
+class MainRedes:
+    
+    red_ferroviaria=[]
+    red_automotor=[]
+    red_aerea=[]
+    red_fluvial=[]
+    
+    def generar_redes(ciudades_creadas):
+        MainRedes.red_ferroviaria = RedNodos(ciudades_creadas, MainTramos.tramos_ferroviarios)
+        MainRedes.red_automotor = RedNodos(ciudades_creadas, MainTramos.tramos_automotores)
+        MainRedes.red_aerea = RedNodos(ciudades_creadas, MainTramos.tramos_aereos)
+        MainRedes.red_fluvial = RedNodos(ciudades_creadas, MainTramos.tramos_fluviales)
+
 
 class NodoCiudad:
     """

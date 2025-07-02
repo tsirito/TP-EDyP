@@ -3,6 +3,25 @@ from Validaciones import Validaciones
 from ciudades import Ciudad
 from Vehiculos import *
 
+class MainTramos:
+    
+    tramos_ferroviarios = []
+    tramos_automotores = []
+    tramos_aereos = []
+    tramos_fluviales = []
+    
+    def cargar_tramos(archivo,ciudades_creadas):
+            creador_tramos = CreadorDeTramos(archivo, ciudades_creadas)
+            tramos_creados = creador_tramos.crear_tramos()
+
+            MainTramos.tramos_ferroviarios = list(filter(lambda t: t.tipo == "Ferroviaria", tramos_creados))
+            MainTramos.tramos_automotores = list(filter(lambda t: t.tipo == "Automotor", tramos_creados))
+            MainTramos.tramos_aereos = list(filter(lambda t: t.tipo == "Aerea", tramos_creados))
+            MainTramos.tramos_fluviales = list(filter(lambda t: t.tipo == "Fluvial", tramos_creados))
+            
+        
+            
+
 class CreadorDeTramos:
     """
     Clase encargada de crear tramos de transporte entre ciudades a partir de un archivo csv.

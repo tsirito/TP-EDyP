@@ -1,4 +1,9 @@
 from leer_archivos import Archivos
+class MainCiudades:
+    def crear(archivo):
+        creadorCiudades = CreadordeCiudades(archivo)
+        ciudades_creadas = creadorCiudades.crear_ciudades()
+        return ciudades_creadas
 
 class CreadordeCiudades:
     """
@@ -41,3 +46,4 @@ class Ciudad:
     def __str__(self):
 
         return self.nombre
+
