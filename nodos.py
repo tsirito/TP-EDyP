@@ -156,10 +156,10 @@ class RedNodos:
                 costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
                 tiempo_horas += tramo.distancia_km / velocidad_tramo      
 
-            if isinstance(tramo, TramoAutomotor):
-                costo_total += vehiculo.restriccion_Automotor(peso)
-            else:
-                costo_total += costo_kg * peso
+                if isinstance(tramo, TramoAutomotor):
+                    costo_total += vehiculo.restriccion_Automotor(peso)
+                else:
+                    costo_total += costo_kg * peso
 
             if invalido:
                 print(f"  {ruta} - Camino inválido por restricciones:")
