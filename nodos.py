@@ -1,6 +1,5 @@
 from crear_tramos import *
 from Vehiculos import *
-from crear_tramos import MainTramos
 
 class MainRedes:
     
@@ -141,6 +140,9 @@ class RedNodos:
                 velocidad_tramo, costoFijo, costo_por_km, invalido = tramo.aplicar_restricciones(vehiculo,peso,vehiculos_necesarios)
 
                 #Restricciones de Vehiculos
+
+                velocidad_tramo,costo_por_km, costoFijo = RedNodos.restriccion_vehiculo(vehiculo,velocidad_tramo,costo_por_km,costoFijo, mal_tiempo)
+                '''
                 if isinstance(tramo, TramoAereo):
                     velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)            
                 
@@ -153,13 +155,15 @@ class RedNodos:
                 if isinstance(tramo, TramoMaritimo):
                     costoFijo = vehiculo.restriccion_Maritima(tramo)
 
+                '''
+
                 costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
                 tiempo_horas += tramo.distancia_km / velocidad_tramo      
 
-                if isinstance(tramo, TramoAutomotor):
-                    costo_total += vehiculo.restriccion_Automotor(peso)
-                else:
-                    costo_total += costo_kg * peso
+            if isinstance(tramo, TramoAutomotor):
+                costo_total += vehiculo.restriccion_Automotor(peso)
+            else:
+                costo_total += costo_kg * peso
 
             if invalido:
                 print(f"  {ruta} - Camino inválido por restricciones:")
@@ -209,3 +213,17 @@ class RedNodos:
             print(f"     Costo total estimado: ${camino['costo']:.2f}")
         
         return caminos_validos
+    
+    def restriccion_vehiculo(tramo, vehiculo, velocidad_tramo, costo_por_km, costoFijo, mal_tiempo):
+        if isinstance(tramo, TramoAereo):
+            velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)                
+            if mal_tiempo:
+                print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")
+        elif isinstance(tramo, TramoFerroviario): #Correcto
+            costo_por_km = vehiculo.restriccion_Ferroviaria(tramo.distancia_km)
+        elif isinstance(tramo, TramoMaritimo):
+            costoFijo = vehiculo.restriccion_Maritima(tramo)
+        return velocidad_tramo, costo_por_km, costoFijo
+    
+    def restriccion_vehiculo2(tramo,vehiculo,costo_total,peso):
+        pass

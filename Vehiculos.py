@@ -8,6 +8,7 @@ class Vehiculo:
          self.costoKm = costoKm
          self.costoKg = costoKg
     
+    
 class Ferroviario(Vehiculo):
     def __init__(self):
         super().__init__(velocidad=100, carga=150000, costoFijo=100, costoKm=20, costoKg=3)

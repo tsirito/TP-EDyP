@@ -19,6 +19,7 @@ class MainTramos:
             MainTramos.tramos_aereos = list(filter(lambda t: t.tipo == "Aerea", tramos_creados))
             MainTramos.tramos_fluviales = list(filter(lambda t: t.tipo == "Fluvial", tramos_creados))
             
+    
         
             
 
