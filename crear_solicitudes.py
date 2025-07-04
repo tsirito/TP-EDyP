@@ -6,11 +6,27 @@ from graficos import Graficar
 
 class MainSolicitudes:
     
-    vehiculo_ferroviario = Ferroviario()
-    vehiculo_automotor = Automotor()
-    vehiculo_aereo = Aereo()
-    vehiculo_maritimo = Maritimo()
-    
+    vehiculo_ferroviario = None
+    vehiculo_automotor = None
+    vehiculo_aereo = None
+    vehiculo_maritimo = None
+
+    @staticmethod
+    def inicializar_vehiculos():
+        creador = CreadordeVehiculos("vehiculos.csv")
+        vehiculos = creador.crear_vehiculos()
+
+        for v in vehiculos:
+            if isinstance(v, Ferroviario) and MainSolicitudes.vehiculo_ferroviario is None:
+                MainSolicitudes.vehiculo_ferroviario = v
+            elif isinstance(v, Automotor) and MainSolicitudes.vehiculo_automotor is None:
+                MainSolicitudes.vehiculo_automotor = v
+            elif isinstance(v, Aereo) and MainSolicitudes.vehiculo_aereo is None:
+                MainSolicitudes.vehiculo_aereo = v
+            elif isinstance(v, Maritimo) and MainSolicitudes.vehiculo_maritimo is None:
+                MainSolicitudes.vehiculo_maritimo = v
+
+
     def crear_solicitudes(archivo):
         creador_solicitudes = CreadorDeSolicitudes(archivo)
         solicitudes = creador_solicitudes.crear_solicitudes()
@@ -18,7 +34,6 @@ class MainSolicitudes:
     
     def procesar_solicitudes(solicitudes):
        
-
         for solicitud in solicitudes:
             print(f"\n Solicitud: {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 

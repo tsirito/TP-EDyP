@@ -48,6 +48,7 @@ class RedNodos:
         red = {}
         for ciudad in ciudades:
             destinos_desde_ciudad = []
+            #
             for tramo in tramos:
                 if tramo.origen == ciudad.nombre:
                     destinos_desde_ciudad.append(tramo)
@@ -92,7 +93,7 @@ class RedNodos:
                     self.buscar_caminos(siguiente_nodo, destino, camino_actual, caminos_visitados)
                     camino_actual.pop() 
 
-    def mostrar_caminos(self, origen, destino, nombre_red, vehiculo, peso):
+    def mostrar_caminos(self, origen, destino, nombre_red, vehiculo, peso): #Consigna para el final --> Modularizar en varias funciones: una que calcule los caminos, otra que muestre los mínimos, etc.
         """
         Muestra todos los caminos posibles entre dos ciudades, calcula distancia, tiempo, costos y restricciones.
         También identifica el camino más barato y el más rápido dentro de la red.
@@ -119,19 +120,25 @@ class RedNodos:
         for i, camino in enumerate(caminos, 1):
             ruta = " -> ".join([tramo.origen for tramo in camino] + [camino[-1].destino])
             distancia_total = sum(t.distancia_km for t in camino)
-            restricciones = []
-            tiempo_horas = 0
+            tiempo_total = 0
             costo_total = 0
+            restricciones_totales = []
+            invalido = False
             vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)
 
-
             for tramo in camino:
-                costoFijo = vehiculo.costoFijo
-                costo_por_km = vehiculo.costoKm
-                costo_kg = vehiculo.costoKg
-                mal_tiempo = False
+                velocidad, costo_fijo, costo_km, inval, restricciones, adicionales = vehiculo.procesar_tramo(tramo, peso, vehiculos_necesarios)
 
-                if tramo.restriccion:
+                if inval:
+                    invalido = True
+                    restricciones_totales.extend(restricciones)
+                    break
+                
+                tiempo_total += tramo.distancia_km / velocidad
+                costo_total += (costo_fijo * vehiculos_necesarios) + (costo_km * tramo.distancia_km * vehiculos_necesarios) + adicionales
+                restricciones_totales.extend(restricciones)
+            
+                """if tramo.restriccion:
                     restricciones.append((tramo.restriccion, tramo.valor_restriccion))
                 
                 velocidad_tramo = vehiculo.velocidad
@@ -141,7 +148,7 @@ class RedNodos:
 
                 #Restricciones de Vehiculos
 
-                velocidad_tramo,costo_por_km, costoFijo = RedNodos.restriccion_vehiculo(vehiculo,velocidad_tramo,costo_por_km,costoFijo, mal_tiempo)
+                velocidad_tramo,costo_por_km, costoFijo = RedNodos.restriccion_vehiculo(tramo,vehiculo,velocidad_tramo,costo_por_km,costoFijo, mal_tiempo,"""
                 '''
                 if isinstance(tramo, TramoAereo):
                     velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)            
@@ -157,13 +164,13 @@ class RedNodos:
 
                 '''
 
-                costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
-                tiempo_horas += tramo.distancia_km / velocidad_tramo      
+                #costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
+                #tiempo_horas += tramo.distancia_km / velocidad_tramo      
 
-            if isinstance(tramo, TramoAutomotor):
-                costo_total += vehiculo.restriccion_Automotor(peso)
-            else:
-                costo_total += costo_kg * peso
+            #if isinstance(tramo, TramoAutomotor):
+                #costo_total += vehiculo.restriccion_Automotor(peso)
+            #else:
+                #costo_total += costo_kg * peso
 
             if invalido:
                 print(f"  {ruta} - Camino inválido por restricciones:")
@@ -175,7 +182,7 @@ class RedNodos:
                 "indice": i,
                 "ruta": ruta,
                 "distancia": distancia_total,
-                "tiempo": tiempo_horas,
+                "tiempo": tiempo_total,
                 "costo": costo_total,
                 "vehiculos": vehiculos_necesarios,
                 "restricciones": restricciones,
@@ -214,16 +221,14 @@ class RedNodos:
         
         return caminos_validos
     
-    def restriccion_vehiculo(tramo, vehiculo, velocidad_tramo, costo_por_km, costoFijo, mal_tiempo):
+    def restriccion_vehiculo(tramo, vehiculo, velocidad_tramo, costo_por_km, costoFijo,mal_tiempo, invalido):
         if isinstance(tramo, TramoAereo):
-            velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)                
+            invalido, velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)                
             if mal_tiempo:
                 print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")
         elif isinstance(tramo, TramoFerroviario): #Correcto
-            costo_por_km = vehiculo.restriccion_Ferroviaria(tramo.distancia_km)
+            invalido, costo_por_km = vehiculo.restriccion_Ferroviaria(tramo.distancia_km)
         elif isinstance(tramo, TramoMaritimo):
-            costoFijo = vehiculo.restriccion_Maritima(tramo)
-        return velocidad_tramo, costo_por_km, costoFijo
+            invalido, costoFijo = vehiculo.restriccion_Maritima(tramo)
+        return invalido, velocidad_tramo, costo_por_km, costoFijo
     
-    def restriccion_vehiculo2(tramo,vehiculo,costo_total,peso):
-        pass
