@@ -5,27 +5,16 @@ from nodos import MainRedes
 from graficos import Graficar
 
 class MainSolicitudes:
-    
+        
     vehiculo_ferroviario = None
     vehiculo_automotor = None
     vehiculo_aereo = None
     vehiculo_maritimo = None
 
-    @staticmethod
     def inicializar_vehiculos():
         creador = CreadordeVehiculos("vehiculos.csv")
-        vehiculos = creador.crear_vehiculos()
-
-        for v in vehiculos:
-            if isinstance(v, Ferroviario) and MainSolicitudes.vehiculo_ferroviario is None:
-                MainSolicitudes.vehiculo_ferroviario = v
-            elif isinstance(v, Automotor) and MainSolicitudes.vehiculo_automotor is None:
-                MainSolicitudes.vehiculo_automotor = v
-            elif isinstance(v, Aereo) and MainSolicitudes.vehiculo_aereo is None:
-                MainSolicitudes.vehiculo_aereo = v
-            elif isinstance(v, Maritimo) and MainSolicitudes.vehiculo_maritimo is None:
-                MainSolicitudes.vehiculo_maritimo = v
-
+        todos_los_vehiculos= creador.crear_vehiculos()
+        MainSolicitudes.vehiculos_por_tipo = todos_los_vehiculos
 
     def crear_solicitudes(archivo):
         creador_solicitudes = CreadorDeSolicitudes(archivo)
@@ -37,11 +26,34 @@ class MainSolicitudes:
         for solicitud in solicitudes:
             print(f"\n Solicitud: {solicitud.id_carga} ({solicitud.peso} kg) de {solicitud.origen} a {solicitud.destino}:\n")
 
-            caminos_ferro = MainRedes.red_ferroviaria.mostrar_caminos(solicitud.origen, solicitud.destino, "Ferroviaria", MainSolicitudes.vehiculo_ferroviario, solicitud.peso)
-            caminos_auto = MainRedes.red_automotor.mostrar_caminos(solicitud.origen, solicitud.destino, "Automotor", MainSolicitudes.vehiculo_automotor, solicitud.peso)
-            caminos_aereo = MainRedes.red_aerea.mostrar_caminos(solicitud.origen, solicitud.destino, "Aérea", MainSolicitudes.vehiculo_aereo, solicitud.peso)
-            caminos_fluvial = MainRedes.red_fluvial.mostrar_caminos(solicitud.origen, solicitud.destino, "Fluvial", MainSolicitudes.vehiculo_maritimo, solicitud.peso)
+            caminos_ferro= []
+            caminos_auto = []
+            caminos_aereo = []
+            caminos_fluvial = []
 
+            for tipo, lista in MainSolicitudes.vehiculos_por_tipo.items():
+                for vehiculo in lista:
+                    if tipo == 'Ferroviario':
+                        resultado = MainRedes.red_ferroviaria.mostrar_caminos(
+                            solicitud.origen, solicitud.destino, "Ferroviaria", vehiculo, solicitud.peso)
+                        if resultado:
+                            caminos_ferro += resultado
+                    elif tipo == 'Automotor':
+                        resultado = MainRedes.red_automotor.mostrar_caminos(
+                            solicitud.origen, solicitud.destino, "Automotor", vehiculo, solicitud.peso)
+                        if resultado:
+                            caminos_auto += resultado
+                    elif tipo == 'Aereo':
+                        resultado = MainRedes.red_aerea.mostrar_caminos(
+                            solicitud.origen, solicitud.destino, "Aérea", vehiculo, solicitud.peso)
+                        if resultado:
+                            caminos_aereo += resultado
+                    elif tipo == 'Maritimo':
+                        resultado = MainRedes.red_fluvial.mostrar_caminos(
+                            solicitud.origen, solicitud.destino, "Fluvial", vehiculo, solicitud.peso)
+                        if resultado:
+                            caminos_fluvial += resultado
+          
             todos_los_caminos = []
             if caminos_ferro: todos_los_caminos += caminos_ferro
             if caminos_auto: todos_los_caminos += caminos_auto
@@ -56,23 +68,27 @@ class MainSolicitudes:
             mejor_tiempo = min(todos_los_caminos, key=lambda x: x["tiempo"])
 
             print("\n Resumen entre las redes:")
-            print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} (${mejor_costo['costo']:.2f})")
-            print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} ({mejor_tiempo['tiempo']:.2f} hs)")
+            print(f"    Más barato: {mejor_costo['ruta']} en red {mejor_costo['red']} "
+                f"(${mejor_costo['costo']:.2f}) usando vehículo ID {mejor_costo['vehiculo'].id} "
+                f"({mejor_costo['vehiculo'].__class__.__name__}, velocidad: {mejor_costo['vehiculo'].velocidad}, Capacidad: {mejor_costo['vehiculo'].carga})")
 
-            MainSolicitudes.graficar(mejor_costo, solicitud.peso)
+            print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} "
+            f"({mejor_tiempo['tiempo']:.2f} hs) usando vehículo ID {mejor_tiempo['vehiculo'].id} "
+            f"({mejor_tiempo['vehiculo'].__class__.__name__}, velocidad: {mejor_tiempo['vehiculo'].velocidad}, Capacidad: {mejor_tiempo['vehiculo'].carga})")
+                    #MainSolicitudes.graficar(mejor_costo, solicitud.peso)
             
     def graficar(mejor_costo, peso):
                 camino_barato = mejor_costo["camino"]
                 red_barato = mejor_costo["red"]
                 vehiculo_barato = {
-                "Ferroviaria": MainSolicitudes.vehiculo_ferroviario,
-                "Automotor": MainSolicitudes.vehiculo_automotor,
-                "Aérea": MainSolicitudes.vehiculo_aereo,
-                "Fluvial": MainSolicitudes.vehiculo_maritimo
+                "Ferroviaria": MainSolicitudes.vehiculos_por_tipo["Ferroviario"], 
+                "Automotor": MainSolicitudes.vehiculos_por_tipo["Automotor"],
+                "Aérea": MainSolicitudes.vehiculos_por_tipo["Aereo"],
+                "Fluvial": MainSolicitudes.vehiculos_por_tipo["Maritimo"]
                 }.get(red_barato)
 
                 print("\nA continuacion se muestran los graficos del camino mas barato para cada solitud:")
-                Graficar.graficar_itinerario(camino_barato, vehiculo_barato, peso)
+                #Graficar.graficar_itinerario(camino_barato, vehiculo_barato, peso)
 
 class Solicitud():
     """
@@ -87,7 +103,6 @@ class Solicitud():
         self.origen = origen
         self.destino = destino
     
-
 class CreadorDeSolicitudes:
     '''
     Clase encargada de leer las solicitudes y crear las instancias de la clase Solicitud y devuelve una lista de las solicitudes
@@ -98,7 +113,6 @@ class CreadorDeSolicitudes:
         """
         self.nombre_archivo = nombre_archivo
         self.archivos = Archivos(nombre_archivo)
-    
 
     def crear_solicitudes(self) -> list[Solicitud]:
         """

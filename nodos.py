@@ -14,12 +14,10 @@ class MainRedes:
         MainRedes.red_aerea = RedNodos(ciudades_creadas, MainTramos.tramos_aereos)
         MainRedes.red_fluvial = RedNodos(ciudades_creadas, MainTramos.tramos_fluviales)
 
-
 class NodoCiudad:
     """
     Representa un nodo individual dentro de la red de ciudades.
     """
-
     def __init__(self, ciudad, destinos):
         """
         Inicializa un nodo con su ciudad asociada y los tramos de destino.
@@ -32,7 +30,6 @@ class NodoCiudad:
         Devuelve una representación formal del nodo, incluyendo la cantidad de destinos.
         """
         return f"Nodo({self.ciudad}, {len(self.destinos)} destinos)"
-
 
 class RedNodos:
     """
@@ -125,7 +122,7 @@ class RedNodos:
             restricciones_totales = []
             invalido = False
             vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)
-
+            #Aca podria ir el for que recorra el dicc de vehiculos, entonces evaluamospor cada vehiculo x todos los caminos
             for tramo in camino:
                 velocidad, costo_fijo, costo_km, inval, restricciones, adicionales = vehiculo.procesar_tramo(tramo, peso, vehiculos_necesarios)
 
@@ -137,40 +134,6 @@ class RedNodos:
                 tiempo_total += tramo.distancia_km / velocidad
                 costo_total += (costo_fijo * vehiculos_necesarios) + (costo_km * tramo.distancia_km * vehiculos_necesarios) + adicionales
                 restricciones_totales.extend(restricciones)
-            
-                """if tramo.restriccion:
-                    restricciones.append((tramo.restriccion, tramo.valor_restriccion))
-                
-                velocidad_tramo = vehiculo.velocidad
-
-                #Restricciones de Tramos
-                velocidad_tramo, costoFijo, costo_por_km, invalido = tramo.aplicar_restricciones(vehiculo,peso,vehiculos_necesarios)
-
-                #Restricciones de Vehiculos
-
-                velocidad_tramo,costo_por_km, costoFijo = RedNodos.restriccion_vehiculo(tramo,vehiculo,velocidad_tramo,costo_por_km,costoFijo, mal_tiempo,"""
-                '''
-                if isinstance(tramo, TramoAereo):
-                    velocidad_tramo, mal_tiempo = vehiculo.restriccion_Aerea(tramo)            
-                
-                if mal_tiempo:
-                    print(f"    Este tramo tuvo mal tiempo en algún tramo aéreo. Velocidad reducida.")                
-
-                if isinstance(tramo, TramoFerroviario): #Correcto
-                    costo_por_km = vehiculo.restriccion_Ferroviaria(tramo.distancia_km)
-                
-                if isinstance(tramo, TramoMaritimo):
-                    costoFijo = vehiculo.restriccion_Maritima(tramo)
-
-                '''
-
-                #costo_total += (costoFijo * vehiculos_necesarios + costo_por_km * tramo.distancia_km * vehiculos_necesarios)
-                #tiempo_horas += tramo.distancia_km / velocidad_tramo      
-
-            #if isinstance(tramo, TramoAutomotor):
-                #costo_total += vehiculo.restriccion_Automotor(peso)
-            #else:
-                #costo_total += costo_kg * peso
 
             if invalido:
                 print(f"  {ruta} - Camino inválido por restricciones:")
@@ -187,7 +150,8 @@ class RedNodos:
                 "vehiculos": vehiculos_necesarios,
                 "restricciones": restricciones,
                 "red": nombre_red,
-                "camino": camino  
+                "camino": camino,
+                "vehiculo": vehiculo
             })
 
         if not caminos_validos: 
@@ -217,6 +181,7 @@ class RedNodos:
                 print("     Sin restricciones.")
             print(f"     Tiempo estimado: {camino['tiempo']:.2f} horas")
             print(f"     Vehículos necesarios: {camino['vehiculos']}")
+            print(f"     Vehículo usado: ID {camino['vehiculo'].id}, carga: {camino['vehiculo'].carga}kg, velocidad: {camino['vehiculo'].velocidad}km/h")
             print(f"     Costo total estimado: ${camino['costo']:.2f}")
         
         return caminos_validos
@@ -231,4 +196,3 @@ class RedNodos:
         elif isinstance(tramo, TramoMaritimo):
             invalido, costoFijo = vehiculo.restriccion_Maritima(tramo)
         return invalido, velocidad_tramo, costo_por_km, costoFijo
-    

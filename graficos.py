@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+from Vehiculos import *
     
 class Graficar:
     def graficar_itinerario(camino, vehiculo, peso):

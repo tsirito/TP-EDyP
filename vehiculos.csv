@@ -1,6 +1,6 @@
 modo,velocidad,capacidadKg,costoFijo,costoKm,costoKg,autonomia
 Ferroviario,100,150000,100,200,3,1500
-Automotor,80,30000,30,5,1,500
+Automotor,80,30000,30,5,1,10
 Automotor,120,25000,35,6,2,400
 Automotor,60,35000,25,4,1,450
 Maritimo,40,100000,500,15,2,2000
