@@ -124,7 +124,7 @@ class RedNodos:
             vehiculos_necesarios = int((peso + vehiculo.carga - 1) // vehiculo.carga)
             #Aca podria ir el for que recorra el dicc de vehiculos, entonces evaluamospor cada vehiculo x todos los caminos
             for tramo in camino:
-                velocidad, costo_fijo, costo_km, inval, restricciones, adicionales = vehiculo.procesar_tramo(tramo, peso, vehiculos_necesarios)
+                velocidad, costo_fijo, costo_km, costo_kg, inval, restricciones, adicionales = vehiculo.procesar_tramo(tramo, peso, vehiculos_necesarios)
 
                 if inval:
                     invalido = True
@@ -132,7 +132,7 @@ class RedNodos:
                     break
                 
                 tiempo_total += tramo.distancia_km / velocidad
-                costo_total += (costo_fijo * vehiculos_necesarios) + (costo_km * tramo.distancia_km * vehiculos_necesarios) + adicionales
+                costo_total += (((costo_km * tramo.distancia_km) + costo_fijo) * vehiculos_necesarios) + (costo_kg * peso) +adicionales
                 restricciones_totales.extend(restricciones)
 
             if invalido:
