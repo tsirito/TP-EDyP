@@ -106,13 +106,13 @@ class Ferroviario(Vehiculo):
         else:
             invalido = True
             nuevas_restricciones.append(("Supero la autonomia", tramo.distancia_km))
-        return velocidad, costo_km, costo_fijo, 0, nuevas_restricciones, invalido
+        return velocidad, costo_km, costo_Kg, costo_fijo, 0, nuevas_restricciones, invalido
         
 class Aereo(Vehiculo):
     def __init__(self, velocidad, carga, costoFijo, costoKm, costoKg,autonomia):
         super().__init__(velocidad, carga, costoFijo, costoKm, costoKg,autonomia)
 
-    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_fijo, invalido):
+    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_Kg, costo_fijo, invalido):
         nuevas_restricciones = []
         if tramo.distancia_km <= self.autonomia:
             if tramo.restriccion == "prob_mal_tiempo":
@@ -122,7 +122,7 @@ class Aereo(Vehiculo):
         else:
             invalido = True
             nuevas_restricciones.append(("Supero la autonomia", tramo.distancia_km))
-        return velocidad, costo_km, costo_fijo, 0, nuevas_restricciones, invalido
+        return velocidad, costo_km, costo_Kg, costo_fijo, 0, nuevas_restricciones, invalido
     
 class Automotor(Vehiculo):
     def __init__(self, velocidad, carga, costoFijo, costoKm, costoKg, autonomia):
@@ -139,7 +139,7 @@ class Automotor(Vehiculo):
             extra += peso
         return extra
 
-    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_fijo, invalido):
+    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_kg, costo_fijo, invalido):
         adicional = self.calculo_adicional(peso)
         nuevas_restricciones = [("costo_extra_peso", adicional)]
 
@@ -147,13 +147,13 @@ class Automotor(Vehiculo):
             invalido = True
             nuevas_restricciones.append(("Supero la autonomia", tramo.distancia_km))
 
-        return velocidad, costo_km, costo_fijo, adicional, nuevas_restricciones, invalido
+        return velocidad, costo_km, costo_kg, costo_fijo, adicional, nuevas_restricciones, invalido
 
 class Maritimo(Vehiculo):
     def __init__(self, velocidad, carga, costoFijo, costoKm, costoKg,autonomia):
         super().__init__(velocidad, carga, costoFijo, costoKm, costoKg,autonomia)
 
-    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_fijo, invalido):
+    def restricciones_especificas(self, tramo, peso, velocidad, costo_km, costo_Kg, costo_fijo, invalido):
         nuevas_restricciones = []
 
         if tramo.distancia_km <= self.autonomia:
@@ -163,5 +163,5 @@ class Maritimo(Vehiculo):
         else:
             nuevas_restricciones.append(("Supero la autonomia", tramo.distancia_km))
             invalido = True
-        return velocidad, costo_km, costo_fijo, 0, nuevas_restricciones, invalido
+        return velocidad, costo_km, costo_Kg, costo_fijo, 0, nuevas_restricciones, invalido
     
