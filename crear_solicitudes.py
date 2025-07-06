@@ -2,7 +2,7 @@ from leer_archivos import Archivos
 from Validaciones import Validaciones
 from Vehiculos import *
 from nodos import MainRedes
-from graficos import Graficar
+from graficos import *
 
 class MainSolicitudes:
         
@@ -61,7 +61,7 @@ class MainSolicitudes:
             if caminos_fluvial: todos_los_caminos += caminos_fluvial
 
             if not todos_los_caminos:
-                print("   No hay caminos viables en ninguna red.")
+                print("   No hay caminos viables para esta solicitud.")
                 continue
 
             mejor_costo = min(todos_los_caminos, key=lambda x: x["costo"])
@@ -75,20 +75,16 @@ class MainSolicitudes:
             print(f"    Más rápido: {mejor_tiempo['ruta']} en red {mejor_tiempo['red']} "
             f"({mejor_tiempo['tiempo']:.2f} hs) usando vehículo ID {mejor_tiempo['vehiculo'].id} "
             f"({mejor_tiempo['vehiculo'].__class__.__name__}, velocidad: {mejor_tiempo['vehiculo'].velocidad}, Capacidad: {mejor_tiempo['vehiculo'].carga})")
-                    #MainSolicitudes.graficar(mejor_costo, solicitud.peso)
+            
+            MainSolicitudes.graficar(mejor_costo,solicitud.peso)
             
     def graficar(mejor_costo, peso):
                 camino_barato = mejor_costo["camino"]
                 red_barato = mejor_costo["red"]
-                vehiculo_barato = {
-                "Ferroviaria": MainSolicitudes.vehiculos_por_tipo["Ferroviario"], 
-                "Automotor": MainSolicitudes.vehiculos_por_tipo["Automotor"],
-                "Aérea": MainSolicitudes.vehiculos_por_tipo["Aereo"],
-                "Fluvial": MainSolicitudes.vehiculos_por_tipo["Maritimo"]
-                }.get(red_barato)
+                vehiculo_barato = mejor_costo["vehiculo"]
 
-                print("\nA continuacion se muestran los graficos del camino mas barato para cada solitud:")
-                #Graficar.graficar_itinerario(camino_barato, vehiculo_barato, peso)
+                print("\nA continuacion se muestran los graficos del camino mas barato para esta solicitud: ")
+                Graficar.graficar_itinerario(camino_barato, vehiculo_barato, peso)
 
 class Solicitud():
     """
@@ -132,6 +128,3 @@ class CreadorDeSolicitudes:
             except (ValueError, IndexError) as e:
                 print(f"Error: No se pudo leer la fila de solicitud '{fila}'. Asegúrate que el formato sea 'id,peso,origen,destino'. Error: {e}")
         return solicitudes
-    
-    
-

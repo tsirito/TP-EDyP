@@ -1,7 +1,6 @@
 import random
 from leer_archivos import Archivos
 
-contador_global = {"valor": 1}
 print("Vehiculos.py fue ejecutado")
 
 class CreadordeVehiculos:
@@ -59,8 +58,8 @@ class Vehiculo:
     contador_id = 1
 
     def __init__(self, velocidad,carga,costoFijo,costoKm,costoKg, autonomia):
-         self.id = contador_global["valor"]
-         contador_global["valor"] += 1
+         self.id = Vehiculo.contador_id
+         Vehiculo.contador_id += 1         
          self.velocidad = velocidad
          self.carga = carga
          self.costoFijo = costoFijo
